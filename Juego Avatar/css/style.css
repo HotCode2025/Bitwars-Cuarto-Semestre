@@ -1,0 +1,138 @@
+h1{
+    color: rgb(0, 81, 108);
+    background-color: rgb(80, 190, 227);
+    font-size: 40px;
+    text-align: center;
+    padding: 20px;
+} 
+body{
+    background-color: lightblue;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+#contenedor-personajes{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+#seleccionar-personaje {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+#boton-personaje {
+    background-color: black;
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+#boton-personaje:hover {
+    background-color: gray;
+}
+
+.boton-ataque {
+    background-color: black;
+    color: white;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+.boton-ataque:hover {
+    background-color: gray;
+}
+
+h2{
+    text-align: center;
+    font-size: 25px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+#reglasdejuego{
+     background-color: black;
+    color: white;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+#reglasdejuego:hover{
+    background-color: gray;
+}
+
+#contenedor-vidas{
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    text-align: center;
+}
+
+#seleccionar-ataque {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+#seleccionar-ataque p{
+    text-align: center;
+}
+
+#mensajes{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+}
+
+#mensaje p{
+    margin: 5px 0;
+}
+
+#boton-reiniciar {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+#boton-reiniciar{
+    background-color: black;
+    color: white;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+#boton-reiniciar:hover{
+    background-color: gray;
+}
+
+@media (max-width: 600px) {
+
+    #contenedor-vidas {
+        flex-direction: column;
+    }
+
+    #contenedor-personajes {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    h1 {
+        font-size: 30px;
+    }
+}
