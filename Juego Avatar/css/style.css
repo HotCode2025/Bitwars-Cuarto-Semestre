@@ -1,0 +1,438 @@
+h1{
+    background-color: rgba(0, 0, 0, 0.55);
+    color: white;
+    text-align: center;
+    font-size: 42px;
+    padding: 20px;
+    margin: 0;
+    letter-spacing: 3px;
+} 
+body{
+    background: linear-gradient(180deg, #08111f, #0d1b2a);
+    color: white;
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    margin: 0;
+}
+
+#contenedor-personajes{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+#contenedor-personajes input{
+    display: none;
+}
+
+#contenedor-personajes label{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+
+    background-color: rgba(255, 255, 255, 0.08);
+    padding: 15px;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+#contenedor-personajes img{
+    width: 140px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+#contenedor-personajes label:hover{
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.tarjeta-personaje input:checked + label {
+    outline: 3px solid white;
+    transform: scale(1.05);
+}
+
+#seleccionar-personaje {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+
+    background-color: rgba(255, 255, 255, 0.06);
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 30px;
+    border-radius: 15px;
+}
+
+#boton-personaje {
+    display: block;
+    margin: 25px auto;
+    background: rgba(255, 255, 255, 0.08);
+    color: #f5c76b;
+    padding: 12px 22px;
+    border: 1px solid rgba(245, 199, 107, 0.5);
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#boton-personaje:hover {
+    background-color: #f5c76b;
+    color: #08111f;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(245, 199, 107, 0.25);
+}
+
+.contenedor-ataques {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 15px;
+    margin: 15px;
+}
+
+.boton-ataque {
+    display: block;
+    margin: 25px auto;
+    background: rgba(255, 255, 255, 0.08);
+    color: #f5c76b;
+    padding: 12px 22px;
+    border: 1px solid rgba(245, 199, 107, 0.5);
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.boton-ataque:hover {
+    background-color: #f5c76b;
+    color: #08111f;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(245, 199, 107, 0.25);
+}
+
+h2{
+    color: #f1f1f1;
+    text-align: center;
+}
+
+#reglasdejuego {
+    display: block;
+    margin: 25px auto;
+    background: rgba(255, 255, 255, 0.08);
+    color: #f5c76b;
+    padding: 12px 22px;
+    border: 1px solid rgba(245, 199, 107, 0.5);
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#reglasdejuego:hover {
+    background-color: #f5c76b;
+    color: #08111f;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(245, 199, 107, 0.25);
+}
+
+#reglas {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+
+.cartel-reglas {
+    position: relative;
+    width: 90%;
+    max-width: 550px;
+    background: linear-gradient(
+        145deg,
+        #111827,
+        #0b1320
+    );
+    color: white;
+    padding: 35px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.7),
+        0 0 30px rgba(255, 170, 50, 0.12);
+
+    font-family: "Trebuchet MS", Arial, sans-serif;
+    text-align: center;
+}
+
+
+.cartel-reglas h2 {
+    font-size: 30px;
+    margin-top: 0;
+    margin-bottom: 25px;
+    color: #f5c76b;
+    letter-spacing: 1px;
+}
+
+
+.cartel-reglas h3 {
+    font-size: 22px;
+    color: #f5c76b;
+    margin-top: 25px;
+}
+
+
+.cartel-reglas p {
+    font-size: 17px;
+    line-height: 1.6;
+}
+
+
+.introduccion-reglas {
+    font-size: 18px;
+}
+
+
+.lista-reglas {
+    background-color: rgba(255, 255, 255, 0.06);
+    padding: 15px;
+    border-radius: 12px;
+    margin: 20px 0;
+}
+
+
+.lista-reglas p {
+    margin: 8px 0;
+}
+
+
+.objetivo-reglas {
+    margin-top: 25px;
+    font-style: italic;
+    color: #d6d6d6;
+}
+
+
+#cerrar-reglas {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: transparent;
+    color: white;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+
+#cerrar-reglas:hover {
+    color: #f5c76b;
+}
+
+#contenedor-vidas{
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    text-align: center;
+}
+
+#seleccionar-ataque {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+#seleccionar-ataque p{
+    text-align: center;
+}
+
+#zona-combate {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 60px;
+    width: 100%;
+    margin: 30px 0;
+}
+
+.combatiente {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.06);
+    padding: 20px;
+    border-radius: 18px;
+    border: 1px solid rgba(245, 199, 107, 0.25);
+    min-width: 220px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.35);
+}
+
+.combatiente img {
+    width: 190px;
+    height: 240px;
+    object-fit: cover;
+    border-radius: 15px;
+    border: 2px solid rgba(245, 199, 107, 0.5);
+}
+
+.combatiente h3 {
+    color: #f5c76b;
+    margin: 12px 0;
+}
+
+.combatiente p {
+    font-size: 18px;
+}
+
+#versus {
+    font-size: 45px;
+    font-weight: bold;
+    color: #f5c76b;
+    text-shadow: 0 0 20px rgba(245, 199, 107, 0.5);
+}
+
+#mensajes{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+}
+
+#mensajes p{
+    margin: 5px 0;
+}
+
+#boton-reiniciar {
+    display: block;
+    margin: 25px auto;
+    background: rgba(255, 255, 255, 0.08);
+    color: #f5c76b;
+    padding: 12px 22px;
+    border: 1px solid rgba(245, 199, 107, 0.5);
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#boton-reiniciar:hover{
+    background-color: #f5c76b;
+    color: #08111f;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(245, 199, 107, 0.25);
+}
+
+#mensajes {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-top: 25px;
+}
+
+.mensaje-combate {
+    width: 90%;
+    max-width: 700px;
+
+    padding: 14px 18px;
+
+    border-radius: 12px;
+
+    text-align: center;
+
+    font-size: 16px;
+    font-weight: bold;
+
+    animation: aparecerMensaje 0.4s ease;
+}
+
+.mensaje-ganaste {
+    background-color: rgba(40, 167, 69, 0.15);
+    border: 1px solid rgba(40, 167, 69, 0.5);
+    color: #7CFC8A;
+}
+
+.mensaje-perdiste {
+    background-color: rgba(220, 53, 69, 0.15);
+    border: 1px solid rgba(220, 53, 69, 0.5);
+    color: #ff7b8a;
+}
+
+.mensaje-empate {
+    background-color: rgba(245, 199, 107, 0.12);
+    border: 1px solid rgba(245, 199, 107, 0.5);
+    color: #f5c76b;
+}
+
+@keyframes aparecerMensaje {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.mensaje-final {
+    width: 90%;
+    max-width: 700px;
+
+    margin: 20px auto;
+    padding: 18px;
+
+    text-align: center;
+
+    color: #f5c76b;
+
+    font-size: 26px;
+    font-weight: bold;
+
+    background: rgba(245, 199, 107, 0.10);
+
+    border: 1px solid rgba(245, 199, 107, 0.5);
+    border-radius: 15px;
+
+    box-shadow: 0 0 25px rgba(245, 199, 107, 0.15);
+
+    animation: aparecerMensaje 0.5s ease;
+}
+
+@media (max-width: 600px) {
+
+    #contenedor-vidas {
+        flex-direction: column;
+    }
+
+    #contenedor-personajes {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    h1 {
+        font-size: 30px;
+    }
+}

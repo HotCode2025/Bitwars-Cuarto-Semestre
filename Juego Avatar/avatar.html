@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LA LEYENDA DE AANG: AVATAR</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+    <h1>AVATAR</h1>
+    <h1>🔥💧🌱🌪️</h1>
+
+    <button id="reglasdejuego">📖 Ver reglas</button>
+
+    <section id="reglas">
+
+    <div class="cartel-reglas">
+
+        <button id="cerrar-reglas">✕</button>
+
+        <h2>📜 Reglas del juego</h2>
+
+        <p class="introduccion-reglas">
+            Primero debes seleccionar un personaje para comenzar la partida.
+        </p>
+
+        <p>
+            ❤️ Tu personaje comienza con <strong>3 vidas</strong>.
+        </p>
+
+        <p>
+            💀 El personaje enemigo también comienza con <strong>3 vidas</strong>.
+        </p>
+
+        <h3>⚔️ Ataques</h3>
+
+        <div class="lista-reglas">
+            <p>🥾 <strong>Patada</strong> vence a ✊ Puño</p>
+            <p>✊ <strong>Puño</strong> vence a 🧹 Barrida</p>
+            <p>🧹 <strong>Barrida</strong> vence a 🥾 Patada</p>
+        </div>
+
+        <p class="objetivo-reglas">
+            El primero que consiga quitar las 3 vidas de su rival gana la partida.
+        </p>
+
+    </div>
+
+</section>
+
+    <section id="seleccionar-personaje">
+    <h2>Elige tu personaje</h2>
+
+    <div id="contenedor-personajes">
+
+    <div class="tarjeta-personaje">
+        <input type="radio" name="personaje" id="zuko">
+        <label for="zuko">
+            <img src="./img/Zuko.png" alt="Zuko">
+            <span>Zuko 🔥</span>
+        </label>
+    </div>
+
+    <div class="tarjeta-personaje">
+        <input type="radio" name="personaje" id="katara">
+        <label for="katara">
+            <img src="./img/Katara.png" alt="Katara">
+            <span>Katara 💧</span>
+        </label>
+    </div>
+
+    <div class="tarjeta-personaje">
+        <input type="radio" name="personaje" id="aang">
+        <label for="aang">
+            <img src="./img/Anng.png" alt="Aang">
+            <span>Aang 🌪️</span>
+        </label>
+    </div>
+
+    <div class="tarjeta-personaje">
+        <input type="radio" name="personaje" id="toph">
+        <label for="toph">
+            <img src="./img/Toph.png" alt="Toph">
+            <span>Toph 🌱</span>
+        </label>
+    </div>
+
+</div>
+
+</div>
+
+        <button id="boton-personaje">Seleccionar</button>
+    </section>
+
+    <section id="seleccionar-ataque">
+    <h2>⚔️ Combate ⚔️</h2>
+    <div id="zona-combate">
+
+        <div class="combatiente">
+            <h3>Jugador</h3>
+            <img id="imagen-jugador" src="" alt="Personaje jugador">
+            <h3 id="nombre-jugador-combate"></h3>
+            <p>
+                ❤️ Vidas:
+                <span id="vidas-jugador">3</span>
+            </p>
+        </div>
+        <div id="versus">
+            VS
+        </div>
+
+        <div class="combatiente">
+            <h3>Enemigo</h3>
+            <img id="imagen-enemigo" src="" alt="Personaje enemigo">
+            <h3 id="nombre-enemigo-combate"></h3>
+            <p>
+                ❤️ Vidas:
+                <span id="vidas-enemigo">3</span>
+            </p>
+        </div>
+
+    </div>
+
+    <!-- Los dejamos porque tu JS ya los usa -->
+    <span id="personaje-jugador" style="display: none;"></span>
+    <span id="personaje-enemigo" style="display: none;"></span>
+
+    <div class="contenedor-ataques">
+        <button id="boton-punio" class="boton-ataque">Puño</button>
+        <button id="boton-patada" class="boton-ataque">Patada</button>
+        <button id="boton-barrida" class="boton-ataque">Barrida</button>
+    </div>
+
+    </section>
+
+    <section id="mensajes">    <!--Sera un parrafo dinamico  -->
+    </section>
+
+    <section id="reiniciar">
+        <button id="boton-reiniciar">Reiniciar</button>
+    </section>
+    <script src="./js/avatar.js"></script>
+</body>
+</html>
