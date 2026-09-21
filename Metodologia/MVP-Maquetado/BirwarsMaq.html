@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitwars - Mendoza</title>
+    <!-- Fuentes -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:opsz,wght@14..32,400;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        /* ----- RESET Y VARIABLES ----- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2d7dff;
+            --primary-dark: #1a5fc7;
+            --secondary: #00c9a7;
+            --bg: #f0f4fa;
+            --card-bg: #ffffff;
+            --text: #1e2a3a;
+            --text-light: #5b6f87;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --radius: 16px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* ----- APP CONTAINER (SIMULA MÓVIL) ----- */
+        #app {
+            max-width: 480px;
+            width: 100%;
+            background: var(--card-bg);
+            border-radius: 32px;
+            box-shadow: 0 20px 60px rgba(0, 20, 40, 0.15);
+            overflow: hidden;
+            position: relative;
+            min-height: 700px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ----- HEADER (visible en todas menos splash) ----- */
+        .app-header {
+            padding: 20px 24px 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--card-bg);
+            z-index: 5;
+        }
+        .app-header .logo {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+        }
+        .app-header .logo span {
+            color: var(--secondary);
+        }
+        .app-header .back-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-light);
+            padding: 4px 8px;
+            border-radius: 8px;
+            transition: var(--transition);
+            display: none;
+        }
+        .app-header .back-btn:hover {
+            background: var(--bg);
+        }
+        .app-header .back-btn.visible {
+            display: inline-block;
+        }
+
+        /* ===== SPLASH SCREEN ===== */
+        #screen-splash {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            background: radial-gradient(circle at center, #1a1a3a 0%, #030312 70%);
+            padding: 20px;
+            animation: fadeIn 1.5s ease-out;
+            border-radius: 32px;
+        }
+        #screen-splash.active {
+            display: flex;
+        }
+        .splash-logo {
+            max-width: 280px;
+            width: 100%;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 0 25px rgba(122, 0, 255, 0.8)) drop-shadow(0 0 15px rgba(0, 240, 255, 0.5));
+            animation: pulse 2s infinite alternate;
+        }
+        .splash-title {
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            letter-spacing: 15px;
+            font-weight: 500;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+            margin-bottom: 30px;
+        }
+        .loader-bar {
+            width: 150px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+        .loader-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #00f0ff, #7a00ff);
+            box-shadow: 0 0 10px #7a00ff;
+            animation: loading 2s ease-in-out infinite;
+        }
+        @keyframes loading {
+            0% { width: 0; }
+            50% { width: 100%; }
+            100% { width: 0; left: auto; right: 0; }
+        }
+        @keyframes pulse {
+            from { transform: scale(0.98); opacity: 0.9; }
+            to { transform: scale(1.02); opacity: 1; }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* ===== RESTO DE PANTALLAS ===== */
+        .screen {
+            display: none;
+            padding: 12px 20px 24px;
+            flex: 1;
+            background: var(--card-bg);
+            animation: fadeSlide 0.25s ease;
+        }
+        .screen.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes fadeSlide {
+            0% { opacity: 0; transform: translateY(12px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== PANTALLA INICIO (selección de ciudad) ===== */
+        #screen-home .greeting {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-bottom: 4px;
+        }
+        #screen-home .title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        #screen-home .title em {
+            color: var(--primary);
+            font-style: normal;
+        }
+
+        .city-selector {
+            margin: 16px 0;
+        }
+        .city-selector label {
+            font-weight: 600;
+            font-size: 14px;
+            display: block;
+            margin-bottom: 6px;
+        }
+        .city-selector select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 16px;
+            background: var(--bg);
+            font-family: inherit;
+            transition: var(--transition);
+            outline: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235b6f87' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            cursor: pointer;
+        }
+        .city-selector select:focus {
+            border-color: var(--primary);
+            background-color: white;
+            box-shadow: 0 0 0 4px rgba(45, 125, 255, 0.1);
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 16px;
+        }
+        .category-card {
+            background: var(--bg);
+            border-radius: var(--radius);
+            padding: 20px 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid transparent;
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--text);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+        }
+        .category-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary);
+            box-shadow: var(--shadow);
+        }
+        .category-card .icon {
+            font-size: 32px;
+            display: block;
+            margin-bottom: 6px;
+        }
+        .btn-buscar {
+            width: 100%;
+            padding: 16px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 40px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: inherit;
+            margin-top: 16px;
+        }
+        .btn-buscar:hover {
+            background: var(--primary-dark);
+            transform: scale(1.01);
+        }
+        .btn-buscar:active {
+            transform: scale(0.96);
+        }
+
+        /* ===== PANTALLA LISTA PROFESIONALES ===== */
+        #screen-list .list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        #screen-list .list-header h3 {
+            font-size: 16px;
+            font-weight: 600;
+        }
+        #screen-list .list-header .badge {
+            background: var(--primary);
+            color: white;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        #screen-list .search-box {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 40px;
+            font-size: 14px;
+            background: var(--bg);
+            transition: var(--transition);
+            margin-bottom: 16px;
+            outline: none;
+            font-family: inherit;
+        }
+        #screen-list .search-box:focus {
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(45, 125, 255, 0.1);
+        }
+
+        .professionals-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex: 1;
+            overflow-y: auto;
+            max-height: 500px;
+            padding-right: 4px;
+        }
+        .professionals-list::-webkit-scrollbar {
+            width: 4px;
+        }
+        .professionals-list::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 8px;
+        }
+
+        .professional-card {
+            display: flex;
+            gap: 14px;
+            background: var(--bg);
+            border-radius: var(--radius);
+            padding: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid transparent;
+            align-items: center;
+        }
+        .professional-card:hover {
+            border-color: var(--primary);
+            background: white;
+            box-shadow: var(--shadow);
+            transform: translateX(4px);
+        }
+        .professional-card .avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: #dbeafe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: var(--primary);
+            flex-shrink: 0;
+            font-weight: 600;
+        }
+        .professional-card .info {
+            flex: 1;
+        }
+        .professional-card .info .name {
+            font-weight: 600;
+            font-size: 16px;
+        }
+        .professional-card .info .category {
+            font-size: 13px;
+            color: var(--text-light);
+        }
+        .professional-card .info .rating {
+            font-size: 13px;
+            color: #f59e0b;
+        }
+        .professional-card .info .rating span {
+            color: var(--text-light);
+            margin-left: 4px;
+        }
+        .professional-card .info .location {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-top: 2px;
+        }
+
+        /* ===== PANTALLA PERFIL ===== */
+        #screen-profile .profile-header {
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        #screen-profile .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: #dbeafe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: var(--primary);
+            margin: 0 auto 8px;
+            font-weight: 700;
+        }
+        #screen-profile .profile-name {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        #screen-profile .profile-category {
+            color: var(--text-light);
+            font-size: 15px;
+        }
+        #screen-profile .profile-location {
+            color: var(--text-light);
+            font-size: 14px;
+            margin: 4px 0;
+        }
+        #screen-profile .profile-rating {
+            font-size: 18px;
+            color: #f59e0b;
+            margin: 4px 0 8px;
+        }
+        #screen-profile .profile-desc {
+            background: var(--bg);
+            border-radius: var(--radius);
+            padding: 16px;
+            margin: 12px 0;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        /* Reseñas */
+        .reviews-section {
+            margin: 16px 0;
+        }
+        .reviews-section h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: var(--text);
+        }
+        .review-item {
+            background: var(--bg);
+            border-radius: 12px;
+            padding: 12px 14px;
+            margin-bottom: 10px;
+        }
+        .review-item .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+        .review-item .review-user {
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .review-item .review-date {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+        .review-item .review-stars {
+            color: #f59e0b;
+            font-size: 14px;
+        }
+        .review-item .review-comment {
+            font-size: 14px;
+            color: var(--text);
+            margin-top: 4px;
+        }
+
+        .profile-photos {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 8px 0 16px;
+            margin-bottom: 12px;
+        }
+        .profile-photos img {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            object-fit: cover;
+            background: #e2e8f0;
+            flex-shrink: 0;
+        }
+
+        .btn-solicitar {
+            width: 100%;
+            padding: 16px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 40px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: inherit;
+        }
+        .btn-solicitar:hover {
+            background: var(--primary-dark);
+            transform: scale(1.02);
+        }
+        .btn-solicitar:active {
+            transform: scale(0.96);
+        }
+
+        /* ===== MODAL DE SOLICITUD ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(6px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+            animation: fadeIn 0.2s;
+        }
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 32px;
+            max-width: 400px;
+            width: 100%;
+            padding: 28px 24px 24px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.25s ease;
+        }
+
+        @keyframes slideUp {
+            0% { transform: translateY(30px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-content h2 {
+            font-size: 22px;
+            margin-bottom: 4px;
+        }
+        .modal-content .sub {
+            color: var(--text-light);
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+        .form-group label {
+            font-weight: 600;
+            font-size: 14px;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 14px;
+            transition: var(--transition);
+            font-family: inherit;
+            background: var(--bg);
+        }
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(45, 125, 255, 0.08);
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .modal-actions button {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+        .modal-actions .btn-cancel {
+            background: #f1f5f9;
+            color: var(--text);
+        }
+        .modal-actions .btn-cancel:hover {
+            background: #e2e8f0;
+        }
+        .modal-actions .btn-send {
+            background: var(--primary);
+            color: white;
+        }
+        .modal-actions .btn-send:hover {
+            background: var(--primary-dark);
+        }
+
+        /* ===== PANTALLA FEEDBACK (AGRADECIMIENTO) ===== */
+        #screen-feedback {
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 24px;
+        }
+        #screen-feedback .check {
+            font-size: 64px;
+            background: var(--secondary);
+            color: white;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+        #screen-feedback h2 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+        #screen-feedback p {
+            color: var(--text-light);
+            font-size: 16px;
+            max-width: 280px;
+            margin: 0 auto 24px;
+        }
+        #screen-feedback .btn-home {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px 40px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+        #screen-feedback .btn-home:hover {
+            background: var(--primary-dark);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 480px) {
+            #app {
+                border-radius: 0;
+                min-height: 100vh;
+                box-shadow: none;
+            }
+            #screen-splash.active {
+                border-radius: 0;
+            }
+            body {
+                padding: 0;
+            }
+            .screen {
+                padding: 8px 16px 20px;
+            }
+            .app-header {
+                padding: 16px 16px 8px;
+            }
+            .splash-title {
+                font-size: 2rem;
+                letter-spacing: 10px;
+            }
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="app">
+
+    <!-- HEADER (visible en todas las pantallas menos la splash) -->
+    <header class="app-header" id="appHeader" style="display:none;">
+        <div class="logo">Bit<span>wars</span></div>
+        <button class="back-btn" id="backBtn" aria-label="Volver">‹</button>
+    </header>
+
+    <!-- ===== PANTALLA SPLASH ===== -->
+    <section id="screen-splash" class="screen active">
+        <img src="bitwars.png" alt="Logo BITWARS" class="splash-logo"
+             onerror="this.style.display='none'; document.getElementById('splashFallback').style.display='block';" />
+        <div id="splashFallback" class="splash-title" style="display:none;">BITWARS</div>
+        <div class="splash-title">BITWARS</div>
+        <div class="loader-bar"></div>
+    </section>
+
+    <!-- ===== PANTALLA INICIO ===== -->
+    <section id="screen-home" class="screen">
+        <div class="greeting">👋 Hola, ¿qué necesitas?</div>
+        <div class="title">Encuentra al <em>profesional</em> en Mendoza</div>
+
+        <div class="city-selector">
+            <label for="selectCiudad">📍 Selecciona tu ciudad</label>
+            <select id="selectCiudad">
+                <option value="">-- Seleccionar --</option>
+            </select>
+        </div>
+
+        <div class="categories-grid" id="categoriesGrid">
+            <!-- Las categorías se inyectan desde JS -->
+        </div>
+
+        <button class="btn-buscar" id="btnBuscar">🔍 Buscar profesionales</button>
+    </section>
+
+    <!-- ===== PANTALLA LISTA ===== -->
+    <section id="screen-list" class="screen">
+        <div class="list-header">
+            <h3 id="listTitle">📋 Profesionales</h3>
+            <span class="badge" id="listBadge">0</span>
+        </div>
+        <input type="text" class="search-box" id="searchInput" placeholder="Buscar profesional..." />
+        <div class="professionals-list" id="professionalsList">
+            <!-- Se llena desde JS -->
+        </div>
+    </section>
+
+    <!-- ===== PANTALLA PERFIL ===== -->
+    <section id="screen-profile" class="screen">
+        <div class="profile-header">
+            <div class="profile-avatar" id="profileAvatar">👤</div>
+            <div class="profile-name" id="profileName">Nombre</div>
+            <div class="profile-category" id="profileCategory">Categoría</div>
+            <div class="profile-location" id="profileLocation">📍 Ciudad</div>
+            <div class="profile-rating" id="profileRating">⭐ 0.0</div>
+        </div>
+        <div class="profile-desc" id="profileDesc">Descripción</div>
+        <div class="profile-photos" id="profilePhotos"></div>
+        <div class="reviews-section" id="reviewsSection">
+            <h3>📝 Reseñas</h3>
+            <div id="reviewsContainer"></div>
+        </div>
+        <button class="btn-solicitar" id="btnSolicitar">📩 Solicitar servicio</button>
+    </section>
+
+    <!-- ===== PANTALLA FEEDBACK (ÉXITO) ===== -->
+    <section id="screen-feedback" class="screen">
+        <div class="check">✓</div>
+        <h2>¡Solicitud enviada!</h2>
+        <p>El profesional recibirá tu mensaje y se pondrá en contacto contigo pronto.</p>
+        <button class="btn-home" id="btnHome">Volver al inicio</button>
+    </section>
+
+    <!-- ===== MODAL SOLICITUD ===== -->
+    <div class="modal-overlay" id="modalSolicitud">
+        <div class="modal-content">
+            <h2>📩 Solicitar servicio</h2>
+            <p class="sub">Completa tus datos para que el profesional te contacte.</p>
+            <form id="formSolicitud">
+                <div class="form-group">
+                    <label for="inputCliente">Tu nombre</label>
+                    <input type="text" id="inputCliente" placeholder="Ej: Carlos" required />
+                </div>
+                <div class="form-group">
+                    <label for="inputTelefono">Teléfono</label>
+                    <input type="text" id="inputTelefono" placeholder="Ej: 2615551234" required />
+                </div>
+                <div class="form-group">
+                    <label for="inputMensaje">Mensaje</label>
+                    <textarea id="inputMensaje" placeholder="Describe brevemente el trabajo..."></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancel" id="btnCancelModal">Cancelar</button>
+                    <button type="submit" class="btn-send" id="btnSendModal">Enviar solicitud</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // ============================================================
+    //  DATOS: PROFESIONALES CON UBICACIÓN Y RESEÑAS
+    // ============================================================
+    const PROFESIONALES = [
+        {
+            id: 'rec001',
+            nombre: 'Luis Martínez',
+            categoria: 'Plomería',
+            ciudad: 'Capital',
+            rating: 4.8,
+            descripcion: 'Especialista en reparaciones de cañerías, desagües y sistemas de agua. Más de 10 años de experiencia.',
+            fotos: ['https://picsum.photos/seed/plom1/200/200', 'https://picsum.photos/seed/plom2/200/200', 'https://picsum.photos/seed/plom3/200/200'],
+            avatar: '🔧',
+            reviews: [
+                { usuario: 'María G.', puntaje: 5, comentario: 'Excelente trabajo, llegó a tiempo y solucionó todo.', fecha: '2025-02-10' },
+                { usuario: 'José L.', puntaje: 4, comentario: 'Buen profesional, pero tardó un poco en llegar.', fecha: '2025-01-20' },
+                { usuario: 'Ana P.', puntaje: 5, comentario: 'Muy recomendable, lo contrataré de nuevo.', fecha: '2025-01-05' }
+            ]
+        },
+        {
+            id: 'rec002',
+            nombre: 'Ana Gómez',
+            categoria: 'Electricidad',
+            ciudad: 'Godoy Cruz',
+            rating: 4.9,
+            descripcion: 'Instalaciones eléctricas, reparaciones y mantenimiento. Trabajo garantizado con materiales de calidad.',
+            fotos: ['https://picsum.photos/seed/elec1/200/200', 'https://picsum.photos/seed/elec2/200/200', 'https://picsum.photos/seed/elec3/200/200'],
+            avatar: '⚡',
+            reviews: [
+                { usuario: 'Carlos R.', puntaje: 5, comentario: 'Muy profesional, resolvió un problema complejo.', fecha: '2025-02-15' },
+                { usuario: 'Laura D.', puntaje: 5, comentario: 'Excelente atención y calidad.', fecha: '2025-02-01' }
+            ]
+        },
+        {
+            id: 'rec003',
+            nombre: 'Carlos Ruiz',
+            categoria: 'Jardinería',
+            ciudad: 'Maipú',
+            rating: 4.6,
+            descripcion: 'Diseño y mantenimiento de jardines, poda, riego y paisajismo. Transformamos tu espacio verde.',
+            fotos: ['https://picsum.photos/seed/jard1/200/200', 'https://picsum.photos/seed/jard2/200/200', 'https://picsum.photos/seed/jard3/200/200'],
+            avatar: '🌿',
+            reviews: [
+                { usuario: 'Sofía M.', puntaje: 4, comentario: 'Hermoso jardín, pero demoró un poco.', fecha: '2025-01-28' },
+                { usuario: 'Pablo H.', puntaje: 5, comentario: 'Recomendado, muy buen trabajo.', fecha: '2025-01-10' }
+            ]
+        },
+        {
+            id: 'rec004',
+            nombre: 'María Fernández',
+            categoria: 'Pintura',
+            ciudad: 'Guaymallén',
+            rating: 4.7,
+            descripcion: 'Pintura interior y exterior, empapelado, texturas y decoración. Acabados profesionales.',
+            fotos: ['https://picsum.photos/seed/pint1/200/200', 'https://picsum.photos/seed/pint2/200/200', 'https://picsum.photos/seed/pint3/200/200'],
+            avatar: '🎨',
+            reviews: [
+                { usuario: 'Elena T.', puntaje: 5, comentario: 'Quedó perfecto, muy cuidadosa.', fecha: '2025-02-12' },
+                { usuario: 'Ricardo S.', puntaje: 4, comentario: 'Buen trabajo, pero el precio un poco alto.', fecha: '2025-01-25' }
+            ]
+        },
+        {
+            id: 'rec005',
+            nombre: 'Jorge Díaz',
+            categoria: 'Plomería',
+            ciudad: 'Las Heras',
+            rating: 4.5,
+            descripcion: 'Servicios de plomería general, instalación de calefones, reparación de filtraciones.',
+            fotos: ['https://picsum.photos/seed/plom4/200/200', 'https://picsum.photos/seed/plom5/200/200', 'https://picsum.photos/seed/plom6/200/200'],
+            avatar: '🔧',
+            reviews: [
+                { usuario: 'Marta L.', puntaje: 4, comentario: 'Solucionó el problema rápidamente.', fecha: '2025-02-05' },
+                { usuario: 'Fernando G.', puntaje: 5, comentario: 'Muy buena atención.', fecha: '2025-01-15' }
+            ]
+        },
+        {
+            id: 'rec006',
+            nombre: 'Laura Torres',
+            categoria: 'Electricidad',
+            ciudad: 'Capital',
+            rating: 4.9,
+            descripcion: 'Especialista en domótica, automatización, instalaciones de iluminación y seguridad eléctrica.',
+            fotos: ['https://picsum.photos/seed/elec4/200/200', 'https://picsum.photos/seed/elec5/200/200', 'https://picsum.photos/seed/elec6/200/200'],
+            avatar: '⚡',
+            reviews: [
+                { usuario: 'Lucía C.', puntaje: 5, comentario: 'Excelente profesional, muy actualizada.', fecha: '2025-02-18' },
+                { usuario: 'Hugo N.', puntaje: 5, comentario: 'Instalación impecable.', fecha: '2025-02-01' },
+                { usuario: 'Diana F.', puntaje: 4, comentario: 'Muy bien, pero un poco costoso.', fecha: '2025-01-20' }
+            ]
+        },
+        {
+            id: 'rec007',
+            nombre: 'Roberto Márquez',
+            categoria: 'Jardinería',
+            ciudad: 'Luján de Cuyo',
+            rating: 4.8,
+            descripcion: 'Especialista en jardines de estilo, paisajismo y sistemas de riego automatizado.',
+            fotos: ['https://picsum.photos/seed/jard4/200/200', 'https://picsum.photos/seed/jard5/200/200', 'https://picsum.photos/seed/jard6/200/200'],
+            avatar: '🌿',
+            reviews: [
+                { usuario: 'Viviana R.', puntaje: 5, comentario: 'Un jardín de ensueño, gracias.', fecha: '2025-02-14' },
+                { usuario: 'Gustavo P.', puntaje: 4, comentario: 'Muy buen trabajo, puntual.', fecha: '2025-01-30' }
+            ]
+        },
+        {
+            id: 'rec008',
+            nombre: 'Silvia López',
+            categoria: 'Pintura',
+            ciudad: 'San Martín',
+            rating: 4.6,
+            descripcion: 'Especialista en pintura de interiores, decoración y acabados de alto nivel.',
+            fotos: ['https://picsum.photos/seed/pint4/200/200', 'https://picsum.photos/seed/pint5/200/200', 'https://picsum.photos/seed/pint6/200/200'],
+            avatar: '🎨',
+            reviews: [
+                { usuario: 'Claudia F.', puntaje: 4, comentario: 'Muy buen trabajo, pero un poco de demora.', fecha: '2025-02-08' },
+                { usuario: 'Andrés M.', puntaje: 5, comentario: 'Excelente calidad y terminación.', fecha: '2025-01-18' }
+            ]
+        },
+        {
+            id: 'rec009',
+            nombre: 'Diego Herrera',
+            categoria: 'Plomería',
+            ciudad: 'Godoy Cruz',
+            rating: 4.7,
+            descripcion: 'Instalaciones de gas, agua caliente y reparaciones de emergencia.',
+            fotos: ['https://picsum.photos/seed/plom7/200/200', 'https://picsum.photos/seed/plom8/200/200', 'https://picsum.photos/seed/plom9/200/200'],
+            avatar: '🔧',
+            reviews: [
+                { usuario: 'Natalia R.', puntaje: 5, comentario: 'Atendió rápido y resolvió el problema.', fecha: '2025-02-20' },
+                { usuario: 'Tomás S.', puntaje: 4, comentario: 'Bien, pero un poco caro.', fecha: '2025-01-28' }
+            ]
+        },
+        {
+            id: 'rec010',
+            nombre: 'Cecilia Bustos',
+            categoria: 'Electricidad',
+            ciudad: 'Maipú',
+            rating: 4.8,
+            descripcion: 'Especialista en instalaciones eléctricas residenciales, automatización y eficiencia energética.',
+            fotos: ['https://picsum.photos/seed/elec7/200/200', 'https://picsum.photos/seed/elec8/200/200', 'https://picsum.photos/seed/elec9/200/200'],
+            avatar: '⚡',
+            reviews: [
+                { usuario: 'Raúl P.', puntaje: 5, comentario: 'Muy profesional, explicó todo con claridad.', fecha: '2025-02-12' },
+                { usuario: 'Marcela G.', puntaje: 4, comentario: 'Buen trabajo, pero tardó un poco.', fecha: '2025-01-22' }
+            ]
+        }
+    ];
+
+    // ============================================================
+    //  ESTADO DE LA APP
+    // ============================================================
+    let currentScreen = 'splash';
+    let selectedProfesional = null;
+    let selectedCiudad = '';
+    let selectedCategoria = '';
+
+    // ============================================================
+    //  REFERENCIAS DOM
+    // ============================================================
+    const screens = {
+        splash: document.getElementById('screen-splash'),
+        home: document.getElementById('screen-home'),
+        list: document.getElementById('screen-list'),
+        profile: document.getElementById('screen-profile'),
+        feedback: document.getElementById('screen-feedback')
+    };
+    const backBtn = document.getElementById('backBtn');
+    const categoriesGrid = document.getElementById('categoriesGrid');
+    const professionalsList = document.getElementById('professionalsList');
+    const searchInput = document.getElementById('searchInput');
+    const modal = document.getElementById('modalSolicitud');
+    const formSolicitud = document.getElementById('formSolicitud');
+    const btnCancelModal = document.getElementById('btnCancelModal');
+    const btnSolicitar = document.getElementById('btnSolicitar');
+    const btnHome = document.getElementById('btnHome');
+    const appHeader = document.getElementById('appHeader');
+    const listTitle = document.getElementById('listTitle');
+    const listBadge = document.getElementById('listBadge');
+    const selectCiudad = document.getElementById('selectCiudad');
+    const btnBuscar = document.getElementById('btnBuscar');
+
+    // ============================================================
+    //  CATEGORÍAS
+    // ============================================================
+    const categorias = [...new Set(PROFESIONALES.map(p => p.categoria))];
+    const iconsCat = {
+        'Plomería': '🔧',
+        'Electricidad': '⚡',
+        'Jardinería': '🌿',
+        'Pintura': '🎨'
+    };
+
+    // ============================================================
+    //  FUNCIONES DE NAVEGACIÓN
+    // ============================================================
+    function showScreen(screenName, data = null) {
+        Object.keys(screens).forEach(key => {
+            screens[key].classList.remove('active');
+        });
+        const screen = screens[screenName];
+        if (screen) {
+            screen.classList.add('active');
+            currentScreen = screenName;
+        }
+        if (screenName === 'splash') {
+            appHeader.style.display = 'none';
+        } else {
+            appHeader.style.display = 'flex';
+        }
+        if (screenName === 'home' || screenName === 'feedback' || screenName === 'splash') {
+            backBtn.classList.remove('visible');
+        } else {
+            backBtn.classList.add('visible');
+        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function goBack() {
+        if (currentScreen === 'list') showScreen('home');
+        else if (currentScreen === 'profile') showScreen('list');
+        else if (currentScreen === 'feedback') showScreen('home');
+        else showScreen('home');
+    }
+
+    // ============================================================
+    //  RENDER CATEGORÍAS
+    // ============================================================
+    function renderCategories() {
+        categoriesGrid.innerHTML = '';
+        categorias.forEach(cat => {
+            const div = document.createElement('div');
+            div.className = 'category-card';
+            div.innerHTML = `<span class="icon">${iconsCat[cat] || '📌'}</span> ${cat}`;
+            div.addEventListener('click', () => {
+                // Seleccionar/deseleccionar categoría
+                if (selectedCategoria === cat) {
+                    selectedCategoria = '';
+                    div.style.borderColor = 'transparent';
+                    div.style.background = 'var(--bg)';
+                } else {
+                    // Desmarcar todas
+                    document.querySelectorAll('.category-card').forEach(c => {
+                        c.style.borderColor = 'transparent';
+                        c.style.background = 'var(--bg)';
+                    });
+                    selectedCategoria = cat;
+                    div.style.borderColor = 'var(--primary)';
+                    div.style.background = '#e8f0fe';
+                }
+            });
+            categoriesGrid.appendChild(div);
+        });
+    }
+
+    // ============================================================
+    //  POBLAR SELECTOR DE CIUDADES
+    // ============================================================
+    function populateCiudades() {
+        const ciudades = [...new Set(PROFESIONALES.map(p => p.ciudad))].sort();
+        selectCiudad.innerHTML = '<option value="">-- Seleccionar --</option>';
+        ciudades.forEach(ciudad => {
+            const opt = document.createElement('option');
+            opt.value = ciudad;
+            opt.textContent = ciudad;
+            selectCiudad.appendChild(opt);
+        });
+    }
+
+    // ============================================================
+    //  BUSCAR PROFESIONALES
+    // ============================================================
+    function buscarProfesionales() {
+        const ciudad = selectCiudad.value;
+        const categoria = selectedCategoria;
+
+        if (!ciudad) {
+            alert('Por favor, selecciona una ciudad.');
+            return;
+        }
+
+        selectedCiudad = ciudad;
+        renderProfessionals(ciudad, categoria);
+        showScreen('list');
+    }
+
+    function renderProfessionals(ciudad, categoria, searchTerm = '') {
+        let filtered = PROFESIONALES.filter(p => p.ciudad === ciudad);
+        if (categoria) {
+            filtered = filtered.filter(p => p.categoria === categoria);
+        }
+        if (searchTerm.trim() !== '') {
+            const term = searchTerm.trim().toLowerCase();
+            filtered = filtered.filter(p =>
+                p.nombre.toLowerCase().includes(term) ||
+                p.categoria.toLowerCase().includes(term)
+            );
+        }
+
+        professionalsList.innerHTML = '';
+        const titleText = categoria ? `${categoria} en ${ciudad}` : `Profesionales en ${ciudad}`;
+        listTitle.textContent = `📋 ${titleText}`;
+        listBadge.textContent = filtered.length;
+
+        if (filtered.length === 0) {
+            professionalsList.innerHTML = `
+                <div style="text-align:center;padding:40px 0;color:var(--text-light);">
+                    <div style="font-size:40px;margin-bottom:8px;">🔍</div>
+                    No encontramos profesionales en ${ciudad}${categoria ? ' para '+categoria : ''}.
+                </div>
+            `;
+            return;
+        }
+
+        filtered.forEach(prof => {
+            const card = document.createElement('div');
+            card.className = 'professional-card';
+            card.innerHTML = `
+                <div class="avatar">${prof.avatar || '👤'}</div>
+                <div class="info">
+                    <div class="name">${prof.nombre}</div>
+                    <div class="category">${prof.categoria}</div>
+                    <div class="rating">⭐ ${prof.rating.toFixed(1)} <span>(${prof.reviews.length} reseñas)</span></div>
+                    <div class="location">📍 ${prof.ciudad}</div>
+                </div>
+            `;
+            card.addEventListener('click', () => {
+                selectedProfesional = prof;
+                renderProfile(prof);
+                showScreen('profile');
+            });
+            professionalsList.appendChild(card);
+        });
+    }
+
+    // ============================================================
+    //  RENDER PERFIL CON RESEÑAS
+    // ============================================================
+    function renderProfile(prof) {
+        document.getElementById('profileAvatar').textContent = prof.avatar || '👤';
+        document.getElementById('profileName').textContent = prof.nombre;
+        document.getElementById('profileCategory').textContent = prof.categoria;
+        document.getElementById('profileLocation').textContent = `📍 ${prof.ciudad}`;
+        document.getElementById('profileRating').textContent = `⭐ ${prof.rating.toFixed(1)} (${prof.reviews.length} reseñas)`;
+        document.getElementById('profileDesc').textContent = prof.descripcion;
+
+        // Fotos
+        const photosContainer = document.getElementById('profilePhotos');
+        photosContainer.innerHTML = '';
+        if (prof.fotos && prof.fotos.length > 0) {
+            prof.fotos.forEach(url => {
+                const img = document.createElement('img');
+                img.src = url;
+                img.alt = 'Trabajo realizado';
+                photosContainer.appendChild(img);
+            });
+        } else {
+            for (let i = 0; i < 3; i++) {
+                const div = document.createElement('div');
+                div.style.cssText = 'width:80px;height:80px;border-radius:12px;background:#e2e8f0;flex-shrink:0;';
+                photosContainer.appendChild(div);
+            }
+        }
+
+        // Reseñas
+        const reviewsContainer = document.getElementById('reviewsContainer');
+        reviewsContainer.innerHTML = '';
+        if (prof.reviews && prof.reviews.length > 0) {
+            prof.reviews.forEach(r => {
+                const item = document.createElement('div');
+                item.className = 'review-item';
+                const stars = '⭐'.repeat(Math.floor(r.puntaje)) + (r.puntaje % 1 !== 0 ? '½' : '');
+                item.innerHTML = `
+                    <div class="review-header">
+                        <span class="review-user">${r.usuario}</span>
+                        <span class="review-date">${r.fecha}</span>
+                    </div>
+                    <div class="review-stars">${stars}</div>
+                    <div class="review-comment">${r.comentario}</div>
+                `;
+                reviewsContainer.appendChild(item);
+            });
+        } else {
+            reviewsContainer.innerHTML = '<p style="color:var(--text-light);font-size:14px;">Este profesional aún no tiene reseñas.</p>';
+        }
+
+        btnSolicitar.dataset.profId = prof.id;
+    }
+
+    // ============================================================
+    //  MODAL Y ENVÍO (con integración n8n)
+    // ============================================================
+    function openModal() {
+        modal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        formSolicitud.reset();
+    }
+
+    function closeModal() {
+        modal.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+
+    formSolicitud.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const cliente = document.getElementById('inputCliente').value.trim();
+        const telefono = document.getElementById('inputTelefono').value.trim();
+        const mensaje = document.getElementById('inputMensaje').value.trim();
+
+        if (!cliente || !telefono) {
+            alert('Por favor, completa tu nombre y teléfono.');
+            return;
+        }
+
+        const profesionalId = btnSolicitar.dataset.profId;
+        const profesional = PROFESIONALES.find(p => p.id === profesionalId);
+
+        if (!profesional) {
+            alert('Error: profesional no encontrado.');
+            return;
+        }
+
+        const payload = {
+            cliente,
+            telefono,
+            categoria: profesional.categoria,
+            profesionalId,
+            mensaje: mensaje || 'Sin mensaje adicional',
+            ciudad: profesional.ciudad
+        };
+
+        const btnSend = document.getElementById('btnSendModal');
+        const originalText = btnSend.textContent;
+        btnSend.disabled = true;
+        btnSend.textContent = '⏳ Enviando...';
+
+        try {
+            // === CONEXIÓN A N8N (descomentar cuando esté listo) ===
+            /*
+            const response = await fetch('http://localhost:5678/webhook/bitwars/solicitar', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const result = await response.json();
+            if (!response.ok) throw new Error(result.message || 'Error al enviar');
+            */
+
+            // SIMULACIÓN
+            console.log('✅ Solicitud enviada:', payload);
+            closeModal();
+            showScreen('feedback');
+
+        } catch (error) {
+            console.error('❌ Error:', error);
+            alert('Error al enviar la solicitud: ' + error.message);
+        } finally {
+            btnSend.disabled = false;
+            btnSend.textContent = originalText;
+        }
+    });
+
+    // ============================================================
+    //  EVENTOS
+    // ============================================================
+    backBtn.addEventListener('click', goBack);
+    btnSolicitar.addEventListener('click', openModal);
+    btnCancelModal.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+    btnHome.addEventListener('click', () => showScreen('home'));
+    btnBuscar.addEventListener('click', buscarProfesionales);
+
+    // Búsqueda en lista
+    searchInput.addEventListener('input', (e) => {
+        if (selectedCiudad) {
+            renderProfessionals(selectedCiudad, selectedCategoria, e.target.value);
+        }
+    });
+
+    // Enter en el campo de búsqueda
+    searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+        }
+    });
+
+    // ============================================================
+    //  INICIALIZACIÓN
+    // ============================================================
+    renderCategories();
+    populateCiudades();
+
+    // Mostrar splash y luego home
+    showScreen('splash');
+    setTimeout(() => {
+        showScreen('home');
+    }, 3000);
+
+    console.log('🚀 Bitwars Mendoza App cargada.');
+    console.log('💡 Conectar con n8n descomentando el fetch en el submit.');
+</script>
+
+</body>
+</html>
