@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LA LEYENDA DE AANG: AVATAR</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+
+    <!-- Título principal del juego -->
+    <h1>AVATAR</h1>
+    <h1>🔥💧🌱🌪️</h1>
+
+    <!-- Botón que permite abrir la ventana de reglas -->
+    <button id="reglasdejuego">📖 Ver reglas</button>
+
+
+    <!-- Sección modal con las reglas del juego -->
+    <section id="reglas">
+
+        <div class="cartel-reglas">
+
+            <button id="cerrar-reglas">✕</button>
+
+            <h2>📜 Reglas del juego</h2>
+
+            <p class="introduccion-reglas">
+                Primero debes seleccionar un personaje para comenzar la partida.
+            </p>
+
+            <p>
+                ❤️ Tu personaje comienza con <strong>3 vidas</strong>.
+            </p>
+
+            <p>
+                💀 El personaje enemigo también comienza con <strong>3 vidas</strong>.
+            </p>
+
+            <h3>⚔️ Ataques</h3>
+
+            <div class="lista-reglas">
+                <p>🥾 <strong>Patada</strong> vence a ✊ Puño</p>
+                <p>✊ <strong>Puño</strong> vence a 🧹 Barrida</p>
+                <p>🧹 <strong>Barrida</strong> vence a 🥾 Patada</p>
+            </div>
+
+            <p class="objetivo-reglas">
+                El primero que consiga quitar las 3 vidas de su rival gana la partida.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- Menú principal: elegir personajes originales o crear uno nuevo -->
+    <section id="modo-personaje">
+
+        <div class="panel-modo-personaje">
+
+            <h2>⚔️ ¿Cómo quieres jugar?</h2>
+
+            <div class="opciones-personaje">
+
+                <button id="usar-originales" class="boton-juego">
+                    Personajes originales
+                </button>
+
+                <button id="crear-personaje" class="boton-juego">
+                    Crear personaje
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Sección donde JavaScript genera dinámicamente las tarjetas de personajes -->
+    <section id="seleccionar-personaje">
+
+        <h2>Elige tu personaje</h2>
+
+        <div id="contenedor-personajes"></div>
+
+        <button id="boton-personaje">
+            Seleccionar
+        </button>
+
+    </section>
+
+
+    <!-- Formulario para crear un personaje personalizado -->
+    <section id="formulario-personaje">
+
+        <div class="panel-crear-personaje">
+
+            <h2>⚔️ Crea tu personaje</h2>
+
+            <div class="formulario-crear">
+
+                <label for="nombre-nuevo-personaje">
+                    Nombre
+                </label>
+
+                <input
+                    type="text"
+                    id="nombre-nuevo-personaje"
+                    placeholder="Nombre de tu personaje"
+                >
+
+                <label for="elemento-nuevo-personaje">
+                    Elemento
+                </label>
+
+                <select id="elemento-nuevo-personaje">
+                    <option value="🔥">🔥 Fuego</option>
+                    <option value="💧">💧 Agua</option>
+                    <option value="🌪️">🌪️ Aire</option>
+                    <option value="🌱">🌱 Tierra</option>
+                </select>
+
+                <button
+                    id="boton-crear-personaje"
+                    class="boton-juego"
+                >
+                    Crear personaje
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Sección principal del combate entre jugador y enemigo -->
+    <section id="seleccionar-ataque">
+
+        <h2>⚔️ Combate ⚔️</h2>
+
+        <div id="zona-combate">
+
+            <!-- Datos visuales del jugador -->
+            <div class="combatiente">
+
+                <h3>Jugador</h3>
+
+                <img
+                    id="imagen-jugador"
+                    src=""
+                    alt="Personaje jugador"
+                >
+
+                <h3 id="nombre-jugador-combate"></h3>
+
+                <p>
+                    ❤️ Vidas:
+                    <span id="vidas-jugador">3</span>
+                </p>
+
+            </div>
+
+
+            <!-- Separador visual del combate -->
+            <div id="versus">
+                VS
+            </div>
+
+
+            <!-- Datos visuales del enemigo -->
+            <div class="combatiente">
+
+                <h3>Enemigo</h3>
+
+                <img
+                    id="imagen-enemigo"
+                    src=""
+                    alt="Personaje enemigo"
+                >
+
+                <h3 id="nombre-enemigo-combate"></h3>
+
+                <p>
+                    ❤️ Vidas:
+                    <span id="vidas-enemigo">3</span>
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- Elementos ocultos utilizados por JavaScript -->
+        <span id="personaje-jugador" style="display: none;"></span>
+        <span id="personaje-enemigo" style="display: none;"></span>
+
+
+        <!-- Botones de ataque del jugador -->
+        <div class="contenedor-ataques">
+
+            <button id="boton-punio" class="boton-ataque">
+                Puño
+            </button>
+
+            <button id="boton-patada" class="boton-ataque">
+                Patada
+            </button>
+
+            <button id="boton-barrida" class="boton-ataque">
+                Barrida
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- Contenedor donde JavaScript muestra los resultados de cada combate -->
+    <section id="mensajes"></section>
+
+
+    <!-- Sección para reiniciar la partida -->
+    <section id="reiniciar">
+
+        <button id="boton-reiniciar">
+            Reiniciar
+        </button>
+
+    </section>
+
+
+    <!-- Archivo JavaScript colocado al final del body -->
+    <script src="./js/avatar.js"></script>
+
+</body>
+
+</html>
+```
