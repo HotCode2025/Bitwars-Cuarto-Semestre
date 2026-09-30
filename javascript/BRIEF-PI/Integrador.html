@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Brief de Proyecto · Tienda de Deportes · BITWARS</title>
+<style>
+  :root {
+    --bg: #070b1a;
+    --bg-2: #0b1226;
+    --surface: rgba(255, 255, 255, 0.03);
+    --surface-2: rgba(255, 255, 255, 0.06);
+    --border: rgba(120, 140, 255, 0.15);
+    --text: #e6ecff;
+    --muted: #93a0c9;
+    --primary: #4d7cff;
+    --accent: #a855f7;
+    --cyan: #22d3ee;
+    --gradient: linear-gradient(135deg, #4d7cff 0%, #8b5cf6 50%, #ec4899 100%);
+    --gradient-2: linear-gradient(135deg, #22d3ee 0%, #4d7cff 50%, #a855f7 100%);
+    --shadow: 0 20px 60px -20px rgba(77, 124, 255, 0.35);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .bg-orbs {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .bg-orbs::before,
+  .bg-orbs::after {
+    content: '';
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.4;
+    animation: float 20s ease-in-out infinite;
+  }
+  .bg-orbs::before {
+    background: radial-gradient(circle, #4d7cff, transparent 70%);
+    top: -200px; left: -200px;
+  }
+  .bg-orbs::after {
+    background: radial-gradient(circle, #a855f7, transparent 70%);
+    bottom: -200px; right: -200px;
+    animation-delay: -10s;
+  }
+  @keyframes float {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(80px, 60px) scale(1.1); }
+  }
+
+  .container {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    padding: 80px 0 60px;
+    text-align: center;
+  }
+  .hero-logo {
+    width: 160px;
+    height: auto;
+    margin: 0 auto 24px;
+    display: block;
+    filter: drop-shadow(0 0 40px rgba(139, 92, 246, 0.5));
+    animation: pulse 4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { filter: drop-shadow(0 0 40px rgba(139, 92, 246, 0.4)); }
+    50% { filter: drop-shadow(0 0 60px rgba(77, 124, 255, 0.7)); }
+  }
+  .hero-brand {
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.4em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .hero-brand span {
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero h1 {
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+  }
+  .hero h1 .grad {
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero p.subtitle {
+    font-size: 1.1rem;
+    color: var(--muted);
+    max-width: 720px;
+    margin: 0 auto 40px;
+  }
+
+  /* Fechas clave hero */
+  .dates {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+  }
+  .date-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    border-radius: 999px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    font-size: 0.9rem;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+  }
+  .date-pill:hover {
+    border-color: rgba(139, 92, 246, 0.5);
+    transform: translateY(-2px);
+  }
+  .date-pill .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gradient);
+    box-shadow: 0 0 12px rgba(139, 92, 246, 0.8);
+  }
+  .date-pill .lbl {
+    color: var(--muted);
+    font-weight: 500;
+  }
+  .date-pill .val {
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  /* Badges de equipo */
+  .team {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    font-size: 0.85rem;
+    color: var(--text);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+  }
+  .badge:hover {
+    border-color: rgba(139, 92, 246, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px -10px rgba(139, 92, 246, 0.5);
+  }
+  .badge::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--gradient);
+  }
+
+  /* Secciones */
+  section { padding: 60px 0; }
+  .section-head {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--muted);
+    padding: 4px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface);
+  }
+  .section-head h2 {
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .section-head h2 .grad {
+    background: var(--gradient-2);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Tarjetas */
+  .grid { display: grid; gap: 20px; }
+  .grid-2 { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+  .grid-3 { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+
+  .card {
+    position: relative;
+    padding: 28px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 16px;
+    padding: 1px;
+    background: var(--gradient);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    background: var(--surface-2);
+    box-shadow: var(--shadow);
+  }
+  .card:hover::before { opacity: 1; }
+
+  .card h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .card h3 .icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--gradient);
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+  .card p, .card li {
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  /* Tablas */
+  .table-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.94rem;
+  }
+  thead { background: var(--surface-2); }
+  th {
+    text-align: left;
+    padding: 16px 20px;
+    font-weight: 600;
+    color: var(--text);
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+  }
+  td {
+    padding: 14px 20px;
+    color: var(--muted);
+    border-bottom: 1px solid rgba(120, 140, 255, 0.08);
+  }
+  tr:last-child td { border-bottom: none; }
+  tbody tr { transition: background 0.2s ease; }
+  tbody tr:hover { background: rgba(77, 124, 255, 0.05); }
+  td strong { color: var(--text); font-weight: 600; }
+
+  /* Stack pill */
+  .pill {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: rgba(77, 124, 255, 0.12);
+    border: 1px solid rgba(77, 124, 255, 0.3);
+    color: #a5b8ff;
+    margin: 2px 4px 2px 0;
+  }
+  .pill.green {
+    background: rgba(34, 211, 238, 0.12);
+    border-color: rgba(34, 211, 238, 0.35);
+    color: #67e8f9;
+  }
+  .pill.purple {
+    background: rgba(168, 85, 247, 0.12);
+    border-color: rgba(168, 85, 247, 0.35);
+    color: #d8b4fe;
+  }
+  .pill.orange {
+    background: rgba(251, 146, 60, 0.12);
+    border-color: rgba(251, 146, 60, 0.35);
+    color: #fdba74;
+  }
+
+  /* Timeline fases */
+  .phase {
+    position: relative;
+    padding: 24px 24px 24px 60px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    margin-bottom: 16px;
+    transition: all 0.3s ease;
+  }
+  .phase:hover {
+    border-color: rgba(139, 92, 246, 0.4);
+    transform: translateX(4px);
+  }
+  .phase::before {
+    content: attr(data-phase);
+    position: absolute;
+    left: 20px;
+    top: 24px;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--gradient);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.85rem;
+  }
+  .phase h4 {
+    font-size: 1.05rem;
+    margin-bottom: 6px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .phase .phase-date {
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: rgba(139, 92, 246, 0.12);
+    border: 1px solid rgba(139, 92, 246, 0.35);
+    color: #d8b4fe;
+    letter-spacing: 0.02em;
+  }
+  .phase .phase-date.final {
+    background: rgba(34, 211, 238, 0.12);
+    border-color: rgba(34, 211, 238, 0.4);
+    color: #67e8f9;
+  }
+  .phase p { color: var(--muted); font-size: 0.92rem; }
+
+  /* Arquitectura */
+  .arch {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 0.85rem;
+    color: #a5b8ff;
+    overflow-x: auto;
+    line-height: 1.8;
+    white-space: pre;
+  }
+  .arch .hl { color: #67e8f9; }
+  .arch .hl2 { color: #d8b4fe; }
+  .arch .hl3 { color: #fdba74; }
+
+  /* Riesgos */
+  .risk {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 18px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid #f87171;
+    border-radius: 10px;
+    margin-bottom: 12px;
+    transition: all 0.3s ease;
+  }
+  .risk:hover {
+    background: var(--surface-2);
+    transform: translateX(4px);
+  }
+  .risk .ico { font-size: 1.3rem; flex-shrink: 0; line-height: 1.4; }
+  .risk strong { color: var(--text); display: block; margin-bottom: 4px; }
+  .risk p { color: var(--muted); font-size: 0.9rem; margin: 0; }
+  .risk.ok { border-left-color: #34d399; }
+  .risk.warn { border-left-color: #fbbf24; }
+
+  /* Footer */
+  footer {
+    padding: 60px 0 40px;
+    text-align: center;
+    border-top: 1px solid var(--border);
+    margin-top: 60px;
+  }
+  footer .logo-sm {
+    width: 70px;
+    margin: 0 auto 16px;
+    display: block;
+    opacity: 0.85;
+  }
+  footer p { color: var(--muted); font-size: 0.88rem; }
+  footer .brand {
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+
+  /* Stats */
+  .stats {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 16px;
+    margin: 40px 0;
+  }
+  @media (max-width: 780px) {
+    .stats { grid-template-columns: 1fr; }
+  }
+  .stat {
+    text-align: center;
+    padding: 24px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .stat:hover {
+    transform: translateY(-4px);
+    border-color: rgba(139, 92, 246, 0.4);
+  }
+  .stat .num {
+    font-size: 2rem;
+    font-weight: 800;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+  .stat .num.sm { font-size: 1.35rem; }
+  .stat .lbl {
+    font-size: 0.82rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  /* Categorías */
+  .cats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  .cat {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    background: rgba(77, 124, 255, 0.1);
+    border: 1px solid rgba(77, 124, 255, 0.3);
+    color: #a5b8ff;
+    transition: all 0.3s ease;
+  }
+  .cat:hover {
+    background: rgba(139, 92, 246, 0.15);
+    border-color: rgba(139, 92, 246, 0.5);
+    color: #d8b4fe;
+    transform: translateY(-2px);
+  }
+  .cat .emoji { font-size: 0.95rem; line-height: 1; }
+
+  /* Callout */
+  .callout {
+    padding: 24px 28px;
+    background: linear-gradient(135deg, rgba(77, 124, 255, 0.1), rgba(168, 85, 247, 0.1));
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-radius: 14px;
+    margin-top: 24px;
+  }
+  .callout p { color: var(--text); font-size: 0.95rem; }
+  .callout strong { color: #d8b4fe; }
+
+  @media (max-width: 640px) {
+    .hero { padding: 50px 0 40px; }
+    section { padding: 40px 0; }
+    .card { padding: 22px; }
+    th, td { padding: 12px 14px; font-size: 0.85rem; }
+    .arch { padding: 20px; font-size: 0.75rem; }
+  }
+
+  @keyframes fadeInUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  ::selection {
+    background: rgba(139, 92, 246, 0.4);
+    color: #fff;
+  }
+
+  ::-webkit-scrollbar { width: 10px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #4d7cff, #a855f7);
+    border-radius: 10px;
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-orbs"></div>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="container">
+    <img src="bitwars.png" alt="BITWARS" class="hero-logo" />
+    <div class="hero-brand">Proyecto <span>BITWARS</span></div>
+    <h1>Tienda de Deportes <span class="grad">Online</span></h1>
+    <p class="subtitle">
+      Brief técnico y estratégico para el desarrollo de un e-commerce deportivo completo:
+      catálogo variado por categorías, pagos con Mercado Pago, envíos con Correo Argentino,
+      notificaciones por email y WhatsApp, panel administrador y métricas en tiempo real.
+    </p>
+
+    <div class="dates">
+      <span class="date-pill">
+        <span class="dot"></span>
+        <span class="lbl">MVP:</span>
+        <span class="val">30/09/2026</span>
+      </span>
+      <span class="date-pill">
+        <span class="dot"></span>
+        <span class="lbl">Entrega final:</span>
+        <span class="val">10/11/2026</span>
+      </span>
+    </div>
+
+    <div class="team">
+      <span class="badge">Tomás Vilche</span>
+      <span class="badge">Franchesco Cornachione</span>
+      <span class="badge">Valentín Castillo</span>
+      <span class="badge">Damián Ponce de León</span>
+      <span class="badge">Pablo García</span>
+    </div>
+  </div>
+</header>
+
+<!-- RESUMEN -->
+<section>
+  <div class="container">
+    <div class="section-head">
+      <span class="section-num">01</span>
+      <h2>Resumen <span class="grad">Ejecutivo</span></h2>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="num sm">Variado por categorías</div>
+        <div class="lbl" style="margin-bottom: 12px;">Catálogo deportivo</div>
+        <div class="cats">
+          <span class="cat"><span class="emoji">⚽</span> Fútbol</span>
+          <span class="cat"><span class="emoji">🏃</span> Running</span>
+          <span class="cat"><span class="emoji">🏀</span> Básquet</span>
+          <span class="cat"><span class="emoji">🎾</span> Tenis</span>
+          <span class="cat"><span class="emoji">🏋️</span> Gimnasio</span>
+          <span class="cat"><span class="emoji">🏊</span> Natación</span>
+          <span class="cat"><span class="emoji">🚴</span> Ciclismo</span>
+          <span class="cat"><span class="emoji">👕</span> Indumentaria</span>
+          <span class="cat"><span class="emoji">👟</span> Calzado</span>
+          <span class="cat"><span class="emoji">🎒</span> Accesorios</span>
+        </div>
+      </div>
+      <div class="stat">
+        <div class="num">30/09</div>
+        <div class="lbl">MVP · 2026</div>
+      </div>
+      <div class="stat">
+        <div class="num">10/11</div>
+        <div class="lbl">Entrega · 2026</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <p>
+        <strong>Objetivo:</strong> construir una tienda online profesional, escalable y visualmente atractiva
+        para la venta de indumentaria y artículos deportivos, con experiencia de compra fluida,
+        automatización de notificaciones y un panel de administración completo para operar el negocio.
+        <strong>Fecha límite de entrega: 10 de noviembre de 2026.</strong>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ALCANCE -->
+<section>
+  <div class="container">
+    <div class="section-head">
+      <span class="section-num">02</span>
+      <h2>Alcance <span class="grad">Funcional</span></h2>
+    </div>
+
+    <h3 style="margin-bottom: 20px; color: var(--muted); font-size: 0.9rem; letter-spacing: 0.1em; text-transform: uppercase;">Tienda — Frontend cliente</h3>
+    <div class="grid grid-2" style="margin-bottom: 48px;">
+      <div class="card">
+        <h3><span class="icon">🛍️</span> Catálogo y búsqueda</h3>
+        <p>Listado con paginación y scroll infinito. Búsqueda por rubro, talle, color, marca y rango de precio. Índices en PostgreSQL con <span class="pill">pg_trgm</span> <span class="pill">tsvector</span></p>
+      </div>
+      <div class="card">
+        <h3><span class="icon">✨</span> Muestrario visual</h3>
+        <p>Grilla atractiva, animaciones vistosas, transiciones suaves y catálogo de carga progresiva con imágenes optimizadas <span class="pill green">WebP</span> <span class="pill green">AVIF</span></p>
+      </div>
+      <div class="card">
+        <h3><span class="icon">🛒</span> Carrito en tiempo real</h3>
+        <p>Estado local persistente, sincronización con el backend al iniciar sesión y validación transaccional de stock en el checkout.</p>
+      </div>
+      <div class="card">
+        <h3><span class="icon">👤</span> Registro de clientes</h3>
+        <p>Alta con datos completos: nombre, email, teléfono, dirección, documento. Historial de pedidos y comprobantes.</p>
+      </div>
+      <div class="card">
+        <h3><span class="icon">💳</span> Checkout</h3>
+        <p>Integración con Mercado Pago Checkout Pro. Webhooks idempotentes y validación atómica de stock.</p>
+      </div>
+      <div class="card">
+        <h3><span class="icon">📦</span> Envíos</h3>
+        <p>Cálculo de costo por zona y peso. Integración futura con Correo Argentino (MiCorreo) en ambiente QA.</p>
+      </div>
+    </div>
+
+    <h3 style="margin-bottom: 20px; color: var(--muted); font-size: 0.9rem; letter-spacing: 0.1em; text-transform: uppercase;">Panel administrador</h3>
+    <div class="grid grid-3">
+      <div class="card">
+        <h3><span class="icon">📝</span> CRUD Productos</h3>
+        <p>Alta, baja y modificación con variantes, imágenes, precios y stock.</p>
+      </div>
+      <div class="card">
+        <h3><span class="icon">📊</span> Métricas</h3>
+        <p>Visitas, compras, productos más vendidos, ingresos y conversión.</p>
+      </div>
+      <div class="card">
+        <h3><span class="icon">🎟️</span> Promociones</h3>
+        <p>Cupones, descuentos por rubro, 2x1 y envío gratis.</p>
+      </div>
+      <div class="card">
+        <h3><span class="icon">📬</span> Pedidos</h3>
+        <p>Ver, modificar estado, cancelar y reenviar notificaciones.</p>
+      </div>
+      <div class="card">
+        <h3><span class="icon">🔐</span> Usuarios y roles</h3>
+        <p>Administradores con distintos niveles de permiso.</p>
+      </div>
+      <div class="card">
+        <h3><span class="icon">⚙️</span> Configuración</h3>
+        <p>Datos de tienda, medios de pago, envíos y plantillas de mensajes.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STACK -->
+<section>
+  <div class="container">
+    <div class="section-head">
+      <span class="section-num">03</span>
+      <h2>Stack <span class="grad">Técnico</span></h2>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Capa</th>
+            <th>Tecnología</th>
+            <th>Notas</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Frontend tienda</strong></td>
+            <td><span class="pill">Vue 3 + Nuxt</span> <span class="pill">React + Next.js</span></td>
+            <td>A definir según preferencia del equipo.</td>
+          </tr>
+          <tr>
+            <td><strong>Frontend admin</strong></td>
+            <td><span class="pill">Mismo framework</span></td>
+            <td>Rutas protegidas y reutilización de componentes.</td>
+          </tr>
+          <tr>
+            <td><strong>Backend</strong></td>
+            <td><span class="pill">Node.js</span> <span class="pill">Express / Fastify</span></td>
+            <td>API REST + webhooks.</td>
+          </tr>
+          <tr>
+            <td><strong>Base de datos</strong></td>
+            <td><span class="pill green">Neon PostgreSQL</span></td>
+            <td>Plan Free inicial; escalar a Launch si es necesario.</td>
+          </tr>
+          <tr>
+            <td><strong>Imágenes</strong></td>
+            <td><span class="pill green">Cloudflare R2 + CDN</span> <span class="pill green">Cloudinary</span></td>
+            <td>Optimización y transformaciones por URL.</td>
+          </tr>
+          <tr>
+            <td><strong>Pagos</strong></td>
+            <td><span class="pill purple">Mercado Pago Checkout Pro</span></td>
+            <td>Sandbox completo y webhooks.</td>
+          </tr>
+          <tr>
+            <td><strong>Envíos</strong></td>
+            <td><span class="pill orange">Correo Argentino MiCorreo</span></td>
+            <td>Simulación en MVP → API en Fase 2.</td>
+          </tr>
+          <tr>
+            <td><strong>Facturación</strong></td>
+            <td><span class="pill orange">AFIP / ARCA wsfev1</span></td>
+            <td>Fase 2. Comprobante interno en MVP.</td>
+          </tr>
+          <tr>
+            <td><strong>Email</strong></td>
+            <td><span class="pill">SendGrid</span> <span class="pill">Postmark</span></td>
+            <td>Confirmación, resumen y factura.</td>
+          </tr>
+          <tr>
+            <td><strong>WhatsApp</strong></td>
+            <td><span class="pill green">Meta Cloud API</span></td>
+            <td>Plantillas pre-aprobadas por Meta.</td>
+          </tr>
+          <tr>
+            <td><strong>Tiempo real</strong></td>
+            <td><span class="pill">SSE / WebSockets</span></td>
+            <td>Opcional, solo si se justifica stock en vivo.</td>
+          </tr>
+          <tr>
+            <td><strong>Hosting</strong></td>
+            <td><span class="pill">VPS Argentina</span> <span class="pill">Railway / Render</span></td>
+            <td>Definir según presupuesto y latencia.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ARQUITECTURA -->
+<section>
+  <div class="container">
+    <div class="section-head">
+      <span class="section-num">04</span>
+      <h2>Arquitectura <span class="grad">General</span></h2>
+    </div>
+
+    <div class="arch">
+<span class="hl">Cliente</span> (Vue / React)
+   │
+   ├── <span class="hl2">API REST</span> (Node.js)
+   │      ├── <span class="hl3">Neon PostgreSQL</span>
+   │      ├── <span class="hl3">Mercado Pago</span> (preference + webhook)
+   │      ├── <span class="hl3">SendGrid</span> (email transaccional)
+   │      ├── <span class="hl3">Meta WhatsApp Cloud API</span>
+   │      ├── <span class="hl3">Correo Argentino</span> (Fase 2)
+   │      └── <span class="hl3">AFIP / ARCA</span> (Fase 2/3)
+   │
+   └── <span class="hl">Storage de imágenes</span> (R2 / Cloudinary + CDN)
+    </div>
+  </div>
+</section>
+
+<!-- FASES -->
+<section>
+  <div class="container">
+    <div class="section-head">
+      <span class="section-num">05</span>
+      <h2>Fases de <span class="grad">Implementación</span></h2>
+    </div>
+
+    <div class="phase" data-phase="1">
+      <h4>MVP <span class="phase-date">hasta 30/09/2026</span></h4>
+      <p>Catálogo con paginación y filtros por categoría · Registro de clientes y carrito · Checkout con Mercado Pago (sandbox → producción) · Panel admin: CRUD productos, stock y pedidos · Notificaciones por email y WhatsApp con plantillas básicas · Métricas esenciales (visitas, ventas, más vendidos) · Simulación de envío · Comprobante interno (no fiscal).</p>
+    </div>
+
+    <div class="phase" data-phase="2">
+      <h4>Integraciones avanzadas <span class="phase-date">01/10 al 25/10/2026</span></h4>
+      <p>Correo Argentino (MiCorreo) en QA · Promociones y descuentos avanzados · Métricas con Google Analytics 4 / Matomo · Stock en tiempo real con SSE / WebSockets (si se justifica) · Inicio de facturación electrónica AFIP/ARCA si el tiempo lo permite.</p>
+    </div>
+
+    <div class="phase" data-phase="3">
+      <h4>Cierre y entrega final <span class="phase-date final">26/10 al 10/11/2026</span></h4>
+      <p>Testing integral y corrección de bugs · Optimización de rendimiento y seguridad · Documentación técnica y manual de usuario · Deploy en producción · <strong>Entrega final: 10/11/2026</strong>.</p>
+    </div>
+
+    <div class="callout" style="margin-top: 24px;">
+      <p>
+        <strong>Nota sobre plazos:</strong> el cronograma se ajusta a una ventana de <strong>6 semanas entre MVP (30/09) y entrega final (10/11)</strong>.
+        Para cumplir la fecha, se priorizan las funcionalidades del MVP y se difiere la facturación electrónica AFIP/ARCA a una etapa posterior, dado que su implementación (WSAA + certificados) es la más riesgosa en tiempos.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- RECURSOS -->
+<section>
+  <div class="container">
+    <div class="section-head">
+      <span class="section-num">06</span>
+      <h2>Recursos <span class="grad">Estimados</span></h2>
+    </div>
+
+    <div class="grid grid-2">
+      <div>
+        <h3 style="margin-bottom: 16px; font-size: 1rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase;">Recursos humanos</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Rol</th><th>Dedicación</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Full-stack Node + Frontend</td><td>Equipo BITWARS · sprint intensivo</td></tr>
+              <tr><td>Diseño UX/UI</td><td>1–2 semanas</td></tr>
+              <tr><td>DevOps / Infra</td><td>3–5 días</td></tr>
+              <tr><td>Integraciones externas</td><td>1–2 semanas</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div>
+        <h3 style="margin-bottom: 16px; font-size: 1rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase;">Costos operativos mensuales</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Servicio</th><th>Costo</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Neon (Free → Launch)</td><td>USD 0 → 19</td></tr>
+              <tr><td>Hosting VPS Argentina</td><td>ARS 5.400–15.000</td></tr>
+              <tr><td>Storage imágenes (R2 10 GB)</td><td>~USD 0.15</td></tr>
+              <tr><td>SendGrid (10.000 emails)</td><td>USD 0–15</td></tr>
+              <tr><td>WhatsApp Business API</td><td>USD 0.005–0.02 / conversación</td></tr>
+              <tr><td>Dominio .com.ar</td><td>~ARS 15.000 / año</td></tr>
+              <tr><td><strong>Total inicial</strong></td><td><strong>USD 20–50 + VPS</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RIESGOS -->
+<section>
+  <div class="container">
+    <div class="section-head">
+      <span class="section-num">07</span>
+      <h2>Riesgos y <span class="grad">Mitigaciones</span></h2>
+    </div>
+
+    <div class="risk">
+      <span class="ico">⏰</span>
+      <div>
+        <strong>Plazo ajustado (entrega 10/11/2026)</strong>
+        <p>Priorizar el MVP y diferir funcionalidades no críticas. Trabajar en sprints semanales con entregables verificables.</p>
+      </div>
+    </div>
+
+    <div class="risk">
+      <span class="ico">⚠️</span>
+      <div>
+        <strong>AFIP / ARCA complejo</strong>
+        <p>Posponer a una etapa posterior a la entrega. Emitir comprobante interno en MVP. El flujo WSAA + certificados requiere validación temprana.</p>
+      </div>
+    </div>
+
+    <div class="risk warn">
+      <span class="ico">🚚</span>
+      <div>
+        <strong>Correo Argentino sin sandbox público</strong>
+        <p>Simular envíos en MVP. Solicitar credenciales QA con anticipación a Correo Argentino.</p>
+      </div>
+    </div>
+
+    <div class="risk warn">
+      <span class="ico">💬</span>
+      <div>
+        <strong>Plantillas de WhatsApp rechazadas</strong>
+        <p>Diseñar plantillas genéricas y aprobarlas antes de usarlas. Fallback por email.</p>
+      </div>
+    </div>
+
+    <div class="risk">
+      <span class="ico">📡</span>
+      <div>
+        <strong>Stock en tiempo real con WebSockets</strong>
+        <p>Validación transaccional en checkout. WebSockets solo si el negocio lo justifica.</p>
+      </div>
+    </div>
+
+    <div class="risk">
+      <span class="ico">🖼️</span>
+      <div>
+        <strong>Rendimiento del catálogo</strong>
+        <p>Paginación, imágenes optimizadas y CDN. Definir estrategia de imágenes antes de cargar el catálogo completo.</p>
+      </div>
+    </div>
+
+    <div class="risk ok">
+      <span class="ico">🔐</span>
+      <div>
+        <strong>Seguridad</strong>
+        <p>JWT + refresh tokens, rate limiting y validación de origen en webhooks.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DECISIONES -->
+<section>
+  <div class="container">
+    <div class="section-head">
+      <span class="section-num">08</span>
+      <h2>Decisiones <span class="grad">Pendientes</span></h2>
+    </div>
+
+    <div class="grid grid-2">
+      <div class="card">
+        <h3><span class="icon">🎨</span> Framework frontend</h3>
+        <p>¿Vue 3 + Nuxt o React + Next.js?</p>
+      </div>
+      <div class="card">
+        <h3><span class="icon">🧾</span> Facturación electrónica</h3>
+        <p>¿Se incluye en la entrega del 10/11 o se difiere a una etapa posterior?</p>
+      </div>
+      <div class="card">
+        <h3><span class="icon">📦</span> Catálogo</h3>
+        <p>¿Los productos ya existen con imágenes y descripciones, o hay que cargarlos desde cero?</p>
+      </div>
+      <div class="card">
+        <h3><span class="icon">📈</span> Volumen estimado</h3>
+        <p>¿Cuántos pedidos diarios se esperan en el primer año?</p>
+      </div>
+      <div class="card">
+        <h3><span class="icon">🚚</span> Correo Argentino</h3>
+        <p>¿Integración real antes del 10/11 o simulación inicial?</p>
+      </div>
+      <div class="card">
+        <h3><span class="icon">🌐</span> Hosting</h3>
+        <p>¿Argentina (pesos, baja latencia) o PaaS internacional (USD, más simple de escalar)?</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <img src="bitwars.png" alt="BITWARS" class="logo-sm" />
+    <p class="brand">BITWARS</p>
+    <p>Tomás Vilche · Franchesco Cornachione · Valentín Castillo · Damián Ponce de León · Pablo García</p>
+    <p style="margin-top: 12px; font-size: 0.8rem; opacity: 0.6;">Brief de Proyecto · Tienda de Deportes Online · MVP 30/09/2026 · Entrega final 10/11/2026</p>
+  </div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.style.animation = 'fadeInUp 0.8s ease forwards';
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('section .container > *').forEach((el, i) => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transitionDelay = `${(i % 6) * 60}ms`;
+    observer.observe(el);
+  });
+
+  if (!('IntersectionObserver' in window)) {
+    document.querySelectorAll('section .container > *').forEach((el) => {
+      el.style.opacity = '1';
+      el.style.transform = 'none';
+    });
+  }
+</script>
+
+</body>
+</html>
