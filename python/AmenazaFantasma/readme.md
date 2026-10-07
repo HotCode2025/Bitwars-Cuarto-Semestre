@@ -67,7 +67,8 @@ Un tributo interactivo a Star Wars: controlás una X-Wing, disparás desde sus c
 
 
 # 1. Clonar el repositorio (o descomprimir el ZIP)
-git clone <URL-del-repo>
+git clone  https://github.com/HotCode2025/Bitwars-Cuarto-Semestre/tree/main/python/AmenazaFantasma
+
 cd AmenazaFantasma
 
 # 2. Crear y activar el entorno virtual
