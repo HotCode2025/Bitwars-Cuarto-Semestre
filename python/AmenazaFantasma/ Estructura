@@ -1,0 +1,21 @@
+AmenazaFantasma/
+├── venv/
+├── main.py
+├── personaje.py
+├── explosion.py
+├── constantes.py
+└── assets_1/
+    ├── images/
+    │   ├── inicio/
+    │   │   └── star.png          (imagen de inicio, opcional)
+    │   ├── fondogalaxia.png      ← tu imagen
+    │   ├── estrella.png          ← tu imagen
+    │   ├── Speeder.png           (opcional, si no hay se usa placeholder)
+    │   ├── enemigo1.png          (ya no se usa, usamos estrella.png)
+    │   ├── lase1.png             (opcional)
+    │   ├── 001.jfif              (icono, opcional)
+    │   └── regularExplosion000.png ... 008.png  (opcional)
+    └── sounds/
+        ├── laserdis.mp3
+        ├── explosion.mp3
+        └── efectos.mp3
