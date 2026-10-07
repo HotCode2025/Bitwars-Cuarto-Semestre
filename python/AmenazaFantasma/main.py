@@ -17,7 +17,7 @@ RECORD_PATH = os.path.join(os.path.dirname(__file__), 'record.txt')
 
 
 # ============================================================
-# FUENTE ROBUSTA
+# FUENTE 
 # ============================================================
 def obtener_fuente(tamanio, negrita=False):
     fuentes_probables = ['dejavusans', 'liberationsans', 'arial', 'freesans', 'sans']
@@ -51,7 +51,7 @@ def guardar_record(puntos):
 
 
 # ============================================================
-# INTRO (sin mensaje de "presiona tecla")
+# INTRO 
 # ============================================================
 def mostrar_imagen_inicial(screen, imagen_path):
     try:
@@ -117,7 +117,7 @@ def mostrar_imagen_inicial(screen, imagen_path):
 
 
 # ============================================================
-# MENÚ (fuentes más chicas, sin pista de navegación)
+# MENÚ 
 # ============================================================
 def mostrar_menu(screen):
     # 🔤 Fuentes reducidas
@@ -201,7 +201,7 @@ def mostrar_menu(screen):
 
 
 # ============================================================
-# RÉCORD (sin mensaje de "presiona tecla")
+# RÉCORD 
 # ============================================================
 def mostrar_record(screen, record):
     font_titulo = obtener_fuente(80, negrita=True)
@@ -232,7 +232,7 @@ def mostrar_record(screen, record):
 
 
 # ============================================================
-# GAME OVER (sin mensaje de "presiona tecla")
+# GAME OVER 
 # ============================================================
 def mostrar_game_over(screen, puntos, nivel, es_nuevo_record=False):
     font_large = obtener_fuente(75, negrita=True)
@@ -271,7 +271,7 @@ def mostrar_game_over(screen, puntos, nivel, es_nuevo_record=False):
 
 
 # ============================================================
-# JUEGO (HUD más chico y sin recuadro verde)
+# JUEGO 
 # ============================================================
 def jugar(screen, sonido_laser, sonido_explosion, sonido_proximidad, canales):
     try:
