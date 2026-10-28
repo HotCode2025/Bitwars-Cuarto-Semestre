@@ -1,0 +1,92 @@
+# ============================================
+# Grupo Bitwars - Cuarto Semestre - Octubre 2026
+#  Java / Maven / Spring Boot /MySQL
+# 
+# ============================================
+target/
+build/
+out/
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+hs_err_pid*
+replay_pid*
+.mvn/timing.properties
+#.mvn/wrapper/maven-wrapper.jar
+
+# ============================================
+# Spring Boot
+# ============================================
+*.log
+logs/
+application-*.properties
+application-*.yml
+
+# ============================================
+# Bases de datos locales
+# ============================================
+*.db
+*.sqlite
+*.sqlite3
+*.mv.db
+*.trace.db
+*.lock.db
+
+# ============================================
+# IntelliJ IDEA
+# ============================================
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+.idea_modules/
+
+# ============================================
+# Eclipse / STS
+# ============================================
+.settings/
+.project
+.classpath
+.factorypath
+.apt_generated
+.springBeans
+.sts4-cache
+
+# ============================================
+# VS Code
+# ============================================
+.vscode/
+*.code-workspace
+
+# ============================================
+# NetBeans
+# ============================================
+nbproject/private/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+# ============================================
+# Sistema operativo
+# ============================================
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# ============================================
+# Variables de entorno / secretos
+# ============================================
+.env
+.env.local
+*.env
+
+# ============================================
+# NetBeans config
+# ============================================
+
+nbactions.xml

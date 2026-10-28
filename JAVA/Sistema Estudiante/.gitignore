@@ -1,0 +1,49 @@
+# ============================================================
+#  .gitignore - Grupo Bitwars - Cuarto Semestre
+#  Proyecto: Sistema de Estudiantes (Java + Maven + NetBeans)
+# ============================================================
+
+# --- Maven (Carpeta de compilación) ---
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+
+# --- NetBeans ---
+nbproject/private/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+build/
+
+# --- IntelliJ IDEA (por si acaso) ---
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# --- Eclipse ---
+.settings/
+.classpath
+.project
+
+# --- Visual Studio Code ---
+.vscode/
+
+# --- Archivos compilados ---
+*.class
+*.jar
+*.war
+hs_err_pid*
+
+# --- Sistema Operativo ---
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# --- ¡MUY IMPORTANTE! Credenciales ---
+src/main/resources/db.properties
