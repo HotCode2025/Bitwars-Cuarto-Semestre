@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="bitwars.png" alt="Bitwars Logo" width="250"/>
+  <img src="bitwars.svg" alt="Bitwars Logo" width="250"/>
   
   <h1>
     <span style="color: #00BFFF;">P</span><span style="color: #00BFFF;">R</span><span style="color: #1E90FF;">O</span><span style="color: #4169E1;">Y</span><span style="color: #8A2BE2;">E</span><span style="color: #9370DB;">C</span><span style="color: #BA55D3;">T</span><span style="color: #DA70D6;">O</span> 
