@@ -1,0 +1,159 @@
+/* Parte 3: pagina, boton y tapa */
+body {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    background-color: #151515;
+}
+
+/* aro metalico que sostiene el boton */
+.base {
+    position: absolute;
+    left: calc(50vw - 15vmin);
+    top: calc(60vh - 15vmin);
+    width: 30vmin;
+    height: 30vmin;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: conic-gradient(from 210deg, #f4f4f4, #8c8c8c 18%, #e6e6e6 35%, #6f6f6f 52%, #f4f4f4 70%, #8c8c8c 86%, #f4f4f4);
+    box-shadow:
+        0 1.2vmin 0 #4d4d4d,
+        0 2.4vmin 0 #2e2e2e,
+        0 3.6vmin 2.5vmin #000000b0,
+        inset 0 0 0 0.5vmin #ffffff80,
+        inset 0 0 0 1.6vmin #1a1a1a;
+    z-index: 2;
+    transform: rotateX(60deg);
+}
+
+button#activate {
+    position: relative;
+    top: -3vmin;
+    width: 23vmin;
+    height: 23vmin;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    outline: none;
+    cursor: pointer;
+    background: radial-gradient(circle at 36% 30%, #ff8a7a 0%, #ff2d1f 24%, #d40000 56%, #7d0000 100%);
+    box-shadow:
+        0 0.8vmin 0 #b00000,
+        0 1.6vmin 0 #930000,
+        0 2.4vmin 0 #760000,
+        0 3.2vmin 0 #590000,
+        inset 0 -1vmin 2vmin #40000099,
+        inset 0 0.4vmin 0.6vmin #ffffff70;
+    transition: top 0.18s ease, box-shadow 0.18s ease, filter 0.25s ease;
+}
+
+/* brillo de plastico sobre la cupula */
+button#activate span {
+    position: absolute;
+    left: 15%;
+    top: 7%;
+    width: 52%;
+    height: 34%;
+    border-radius: 50%;
+    background: linear-gradient(180deg, #ffffffb8, #ffffff00);
+    pointer-events: none;
+}
+
+button#activate:hover {
+    top: -3.6vmin;
+    filter: brightness(1.15) saturate(1.1);
+    box-shadow:
+        0 0.8vmin 0 #b00000,
+        0 1.6vmin 0 #930000,
+        0 2.4vmin 0 #760000,
+        0 3.2vmin 0 #590000,
+        0 0 5vmin 1vmin #ff2a1a80,
+        inset 0 -1vmin 2vmin #40000099,
+        inset 0 0.4vmin 0.6vmin #ffffff90;
+}
+
+button#activate:focus-visible {
+    box-shadow: 0 0 0 0.8vmin #fff, 0 3.2vmin 0 #590000;
+}
+
+button#activate:active,
+button#activate.pushed {
+    top: -0.7vmin;
+    box-shadow:
+        0 0.5vmin 0 #930000,
+        0 1vmin 0 #590000,
+        inset 0 0.8vmin 2vmin #40000099;
+}
+
+button#activate.pushed {
+    background: radial-gradient(circle at 42% 36%, #ffe0d6 0%, #ff5a42 22%, #ff0000 60%, #a00000 100%);
+    box-shadow:
+        0 0.5vmin 0 #930000,
+        0 0 3vmin 1.5vmin #ff3c3c,
+        0 0 12vmin 6vmin #ff000080;
+}
+
+.box {
+    transform: rotateX(60deg) rotateZ(-45deg) translateY(-22.5vmin) rotateX(0deg) translateY(22.5vmin);
+    transform-style: preserve-3d;
+    width: 45vmin;
+    height: 45vmin;
+    position: absolute;
+    left: calc(50vw - 22.5vmin);
+    top: calc(60vh - 22.5vmin);
+    z-index: 5;
+    transition: transform 1s ease 0s;
+    cursor: pointer;
+}
+
+.box.opened {
+    transform: rotateX(60deg) rotateZ(-45deg) translateY(-22.5vmin) rotateX(105deg) translateY(22.5vmin);
+}
+
+.box div {
+    position: absolute;
+    width: 45vmin;
+    height: 45vmin;
+    background: #00bcd47d;
+    opacity: 0.5;
+    border: 1px solid #00a4b9;
+    border-radius: 3px;
+    box-sizing: border-box;
+    box-shadow: 0 0 3px #00bcd4a6;
+    transform-origin: 0 0;
+}
+
+.box > div:nth-child(1) {
+    opacity: 0;
+}
+
+.box > div:nth-child(2) {
+    transform: translateZ(10vmin);
+}
+
+.box > div:nth-child(3) {
+    height: 10vmin;
+    transform: rotateX(90deg);
+}
+
+.box > div:nth-child(4) {
+    height: 10vmin;
+    transform: translateY(45vmin) rotateX(90deg);
+}
+
+.box > div:nth-child(5) {
+    width: 10vmin;
+    transform: rotateY(-90deg);
+}
+
+.box > div:nth-child(6) {
+    width: 10vmin;
+    transform: translateX(45vmin) rotateY(-90deg);
+}
+
