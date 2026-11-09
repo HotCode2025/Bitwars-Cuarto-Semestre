@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Outlet } from 'react-router-dom'
 import HomePage from './pages/HomePage'
 import AboutPage from './pages/AboutPage'
 import LoginPage from './pages/LoginPage'
@@ -11,9 +11,12 @@ import Navbar from './components/navbar/Navbar'
 import { ProtectedRoute } from './components/ProtectedRoute'
 import { Container } from './components/ui'
 import { useAuth } from './context/AuthContext'
+import { TareasProvider } from './context/TareasContext'
 
 function App() {
-  const { isAuth } = useAuth()
+  const { isAuth, loading } = useAuth()
+
+  if (loading) return <h1 className="text-2xl font-bold text-center py-10">Cargando...</h1>
 
   return (
     <>
@@ -29,9 +32,17 @@ function App() {
 
           <Route element={<ProtectedRoute isAllowed={isAuth} redirectTo="/login" />}>
             <Route path="/perfil" element={<ProfilePage />} />
-            <Route path="/tareas" element={<TareasPage />} />
-            <Route path="/tareas/crear" element={<TareaFormPage />} />
-            <Route path="/tareas/editar/:id" element={<TareaFormPage />} />
+            <Route
+              element={
+                <TareasProvider>
+                  <Outlet />
+                </TareasProvider>
+              }
+            >
+              <Route path="/tareas" element={<TareasPage />} />
+              <Route path="/tareas/crear" element={<TareaFormPage />} />
+              <Route path="/tareas/:id/editar" element={<TareaFormPage />} />
+            </Route>
           </Route>
 
           <Route path="*" element={<NotFound />} />

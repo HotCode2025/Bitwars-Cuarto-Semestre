@@ -15,6 +15,8 @@ pnpm dev
 
 El servidor queda en `http://localhost:3000`.
 
+Si PowerShell bloquea `pnpm` por la política de scripts de Windows, usar `pnpm.cmd` (por ejemplo, `pnpm.cmd dev`).
+
 En esta compu PostgreSQL corre en una instancia propia, en el puerto 5433, que no arranca sola con Windows. Antes de `pnpm dev`, en PowerShell:
 
 ```powershell
@@ -23,7 +25,7 @@ pg_ctl start -D "$env:LOCALAPPDATA\pern-postgres\data" -l "$env:LOCALAPPDATA\per
 
 ## Parte 1: backend con Express
 
-- Estructura en `src/`: `controllers`, `router`, `middlewares`, `schemas`, `libs`.
+- Estructura en `backend/`: `controllers`, `router`, `middlewares`, `schemas`, `libs`.
 - `index.js` arranca el servidor y `app.js` lo configura.
 - `morgan` muestra las peticiones por consola.
 - `express.json` y `express.urlencoded` convierten lo que llega en objetos de JavaScript.
@@ -47,7 +49,7 @@ pg_ctl start -D "$env:LOCALAPPDATA\pern-postgres\data" -l "$env:LOCALAPPDATA\per
 
 - `db.js` conecta con PostgreSQL usando el driver `pg` y un `Pool`.
 - Los datos de conexión están en `.env`, que no se sube al repositorio, y los lee `config.js`.
-- `database/init.sql` crea la tabla `tareas`, con título único y obligatorio.
+- `database/init.sql` crea la tabla `tareas`, con título obligatorio.
 - Las consultas usan parámetros (`$1`, `$2`) para no armar SQL con lo que manda el usuario.
 - `express-promise-router` manda al manejador de errores lo que falle en las funciones async.
 
@@ -55,7 +57,7 @@ pg_ctl start -D "$env:LOCALAPPDATA\pern-postgres\data" -l "$env:LOCALAPPDATA\per
 |---|---|---|
 | GET | `/api/tareas` | 200 y la lista de tareas |
 | GET | `/api/tareas/:id` | 200 y la tarea, o 404 si no existe |
-| POST | `/api/tareas` | 200 y la tarea creada, o 409 si el título ya existe |
+| POST | `/api/tareas` | 200 y la tarea creada |
 | PUT | `/api/tareas/:id` | 200 y la tarea actualizada, o 404 si no existe |
 | DELETE | `/api/tareas/:id` | 204 sin contenido, o 404 si no existe |
 
@@ -102,7 +104,7 @@ pnpm dev
 Backend:
 
 - `cors` permite las peticiones desde `http://localhost:5173`, con credenciales para que viaje la cookie.
-- `zod` valida los datos en `src/schemas`, y el middleware `validateSchema` responde 400 con la lista de errores.
+- `zod` valida los datos en `backend/schemas`, y el middleware `validateSchema` responde 400 con la lista de errores.
 
 Frontend:
 
@@ -112,3 +114,22 @@ Frontend:
 - `ProtectedRoute` decide qué páginas se ven según haya sesión o no, y la barra de navegación cambia igual.
 - Los errores del backend se muestran en los formularios.
 - Se pueden crear, listar y eliminar tareas desde la página.
+
+## Parte 7: tareas completas y producción
+
+- `TareasContext` centraliza crear, listar, editar y eliminar tareas, mediante `useTareas`.
+- El mismo formulario crea o edita según haya un `id` en la URL.
+- Mientras se comprueba la sesión se muestra "Cargando...", así recargar no saca al usuario de la página.
+- Los títulos se pueden repetir.
+- Diseño adaptable a pantallas chicas, íconos con `react-icons` y avatar de Gravatar en la barra.
+- Los errores desaparecen solos a los 4 segundos.
+- `GET /api/ping` comprueba la conexión con la base de datos.
+- `src` pasó a llamarse `backend`, y el puerto, la base y el origen se configuran por variables de entorno.
+
+### Despliegue en Railway
+
+Se crean tres servicios en un mismo proyecto, desde el repositorio de GitHub:
+
+1. **PostgreSQL:** ejecutar `database/init.sql` en la base nueva.
+2. **Backend** (raíz del repositorio), con estas variables: `PG_HOST`, `PG_PORT`, `PG_USER`, `PG_PASSWORD`, `PG_DATABASE`, `TOKEN_SECRET` y `ORIGIN` (URL del frontend con `https://` y sin barra final).
+3. **Frontend** (directorio raíz `frontend`), con la variable `VITE_BACKEND` (URL del backend con `https://`, terminada en `/api`).

@@ -13,6 +13,7 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
   const [isAuth, setIsAuth] = useState(false)
   const [errors, setErrors] = useState(null)
+  const [loading, setLoading] = useState(true)
 
   const iniciarSesion = async (ruta, data) => {
     try {
@@ -49,9 +50,18 @@ export function AuthProvider({ children }) {
         setUser(null)
         setIsAuth(false)
       })
+      .finally(() => setLoading(false))
   }, [])
 
+  useEffect(() => {
+    if (!errors) return
+    const timer = setTimeout(() => setErrors(null), 4000)
+    return () => clearTimeout(timer)
+  }, [errors])
+
   return (
-    <AuthContext.Provider value={{ user, isAuth, errors, signup, signin, signout }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ user, isAuth, errors, loading, signup, signin, signout }}>
+      {children}
+    </AuthContext.Provider>
   )
 }

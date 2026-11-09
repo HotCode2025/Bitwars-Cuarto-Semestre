@@ -3,7 +3,7 @@ import { useAuth } from '../context/AuthContext'
 function ProfilePage() {
   const { user } = useAuth()
 
-  return <pre>{JSON.stringify(user, null, 2)}</pre>
+  return <pre className="whitespace-pre-wrap break-all">{JSON.stringify(user, null, 2)}</pre>
 }
 
 export default ProfilePage
