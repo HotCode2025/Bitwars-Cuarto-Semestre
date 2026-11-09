@@ -67,3 +67,10 @@ pg_ctl start -D "$env:LOCALAPPDATA\pern-postgres\data" -l "$env:LOCALAPPDATA\per
 - `libs/jwt.js` genera un token JWT con el id del usuario, que vence en un día.
 - El token viaja en una cookie `httpOnly`, que JavaScript no puede leer desde el navegador.
 - La respuesta devuelve los datos del usuario sin la contraseña. Si el correo ya existe, responde 400.
+
+## Parte 4: rutas protegidas
+
+- `cookie-parser` convierte las cookies de la petición en un objeto (`req.cookies`).
+- El middleware `isAuth` verifica el token: si falta o es inválido, responde 401 con "No estas autorizado".
+- Si el token es válido, guarda el id del usuario en `req.userId` y sigue con `next()`.
+- Protege todas las rutas de tareas y `GET /api/profile`.
