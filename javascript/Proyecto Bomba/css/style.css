@@ -10,7 +10,7 @@ body {
     background-color: #151515;
 }
 
-/* aro metalico que sostiene el boton */
+/* aro de acero cepillado atornillado a la placa */
 .base {
     position: absolute;
     left: calc(50vw - 15vmin);
@@ -21,82 +21,140 @@ body {
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    background: conic-gradient(from 210deg, #f4f4f4, #8c8c8c 18%, #e6e6e6 35%, #6f6f6f 52%, #f4f4f4 70%, #8c8c8c 86%, #f4f4f4);
+    background:
+        radial-gradient(circle closest-side, #050505 0 76%, #1c1c1c 77%, #bdbdbd 78.5%, #6a6a6a 80%, transparent 81%),
+        repeating-conic-gradient(#ffffff12 0 0.6deg, #00000014 0.6deg 1.2deg),
+        conic-gradient(from 215deg, #f2f2f2, #8f8f8f 14%, #d9d9d9 27%, #6e6e6e 44%, #e8e8e8 58%, #7d7d7d 74%, #cfcfcf 88%, #f2f2f2);
     box-shadow:
-        0 1.2vmin 0 #4d4d4d,
-        0 2.4vmin 0 #2e2e2e,
-        0 3.6vmin 2.5vmin #000000b0,
-        inset 0 0 0 0.5vmin #ffffff80,
-        inset 0 0 0 1.6vmin #1a1a1a;
+        0 0.5vmin 0 #8a8a8a,
+        0 1vmin 0 #5c5c5c,
+        0 1.5vmin 0 #333,
+        0 3vmin 2.5vmin 0.5vmin #000000c0,
+        inset 0 0 0 0.25vmin #ffffffa0;
     z-index: 2;
     transform: rotateX(60deg);
+    transition: translate 0.55s var(--resorte);
+}
+
+.base:has(#activate:active) {
+    translate: 0 0.3vmin;
+    transition: translate 0.06s ease-in;
+}
+
+/* cuatro tornillos sobre el aro */
+.base:before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    --tornillo: #f0f0f0 0, #9a9a9a 55%, #3a3a3a 80%, transparent 100%;
+    background:
+        radial-gradient(circle 0.75vmin at calc(50% - 9.4vmin) calc(50% - 9.4vmin), var(--tornillo)),
+        radial-gradient(circle 0.75vmin at calc(50% + 9.4vmin) calc(50% - 9.4vmin), var(--tornillo)),
+        radial-gradient(circle 0.75vmin at calc(50% - 9.4vmin) calc(50% + 9.4vmin), var(--tornillo)),
+        radial-gradient(circle 0.75vmin at calc(50% + 9.4vmin) calc(50% + 9.4vmin), var(--tornillo));
 }
 
 button#activate {
+    --recorrido: 8vmin;
     position: relative;
-    top: -3vmin;
-    width: 23vmin;
-    height: 23vmin;
+    width: 22vmin;
+    height: 22vmin;
     padding: 0;
     border: 0;
     border-radius: 50%;
     outline: none;
     cursor: pointer;
-    background: radial-gradient(circle at 36% 30%, #ff8a7a 0%, #ff2d1f 24%, #d40000 56%, #7d0000 100%);
-    box-shadow:
-        0 0.8vmin 0 #b00000,
-        0 1.6vmin 0 #930000,
-        0 2.4vmin 0 #760000,
-        0 3.2vmin 0 #590000,
-        inset 0 -1vmin 2vmin #40000099,
-        inset 0 0.4vmin 0.6vmin #ffffff70;
-    transition: top 0.18s ease, box-shadow 0.18s ease, filter 0.25s ease;
+    background: transparent;
 }
 
-/* brillo de plastico sobre la cupula */
+/* costado del cilindro: la luz cae de frente y se oscurece hacia los bordes */
+button#activate:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: calc(var(--recorrido) * -1);
+    width: 100%;
+    height: calc(100% + var(--recorrido));
+    border-radius: 11vmin;
+    background:
+        linear-gradient(90deg, #2c0000 0%, #7f0300 9%, #c40d02 24%, #f0301c 41%, #d61406 58%, #8a0400 82%, #300000 100%);
+    box-shadow: 0 0.8vmin 1.2vmin #000000d0;
+    transition: top 0.55s var(--resorte), height 0.55s var(--resorte);
+}
+
+/* cara superior, apenas abombada */
 button#activate span {
     position: absolute;
-    left: 15%;
-    top: 7%;
-    width: 52%;
+    left: 0;
+    top: calc(var(--recorrido) * -1);
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background:
+        radial-gradient(ellipse 62% 26% at 52% 95%, #ff7a5c90, transparent 72%),
+        radial-gradient(circle at 44% 36%, #f2331f 0%, #dc1508 38%, #b90a02 68%, #8c0500 90%, #6a0300 100%);
+    box-shadow:
+        inset 0 0 0 0.2vmin #ff8b7666,
+        inset 0 -0.6vmin 1.4vmin #30000099,
+        inset 0 0.6vmin 1vmin #ffffff3d;
+    transition: top 0.55s var(--resorte), box-shadow 0.15s ease, filter 0.2s ease;
+}
+
+/* reflejo ancho y difuso de la luz del techo */
+button#activate span:before {
+    content: "";
+    position: absolute;
+    left: 17%;
+    top: 9%;
+    width: 58%;
     height: 34%;
     border-radius: 50%;
-    background: linear-gradient(180deg, #ffffffb8, #ffffff00);
-    pointer-events: none;
+    background: linear-gradient(180deg, #ffffff9c, #ffffff0a 88%);
+    filter: blur(0.45vmin);
 }
 
-button#activate:hover {
-    top: -3.6vmin;
-    filter: brightness(1.15) saturate(1.1);
-    box-shadow:
-        0 0.8vmin 0 #b00000,
-        0 1.6vmin 0 #930000,
-        0 2.4vmin 0 #760000,
-        0 3.2vmin 0 #590000,
-        0 0 5vmin 1vmin #ff2a1a80,
-        inset 0 -1vmin 2vmin #40000099,
-        inset 0 0.4vmin 0.6vmin #ffffff90;
+/* punto de brillo duro, el detalle que hace ver plastico real */
+button#activate span:after {
+    content: "";
+    position: absolute;
+    left: 28%;
+    top: 14%;
+    width: 15%;
+    height: 8%;
+    border-radius: 50%;
+    background: #ffffffe6;
+    filter: blur(0.2vmin);
 }
 
-button#activate:focus-visible {
-    box-shadow: 0 0 0 0.8vmin #fff, 0 3.2vmin 0 #590000;
+button#activate:hover span {
+    filter: brightness(1.1);
 }
 
-button#activate:active,
-button#activate.pushed {
-    top: -0.7vmin;
-    box-shadow:
-        0 0.5vmin 0 #930000,
-        0 1vmin 0 #590000,
-        inset 0 0.8vmin 2vmin #40000099;
+button#activate:focus-visible span {
+    box-shadow: 0 0 0 0.6vmin #fff;
 }
 
 button#activate.pushed {
-    background: radial-gradient(circle at 42% 36%, #ffe0d6 0%, #ff5a42 22%, #ff0000 60%, #a00000 100%);
+    --recorrido: 2.6vmin;
+}
+
+button#activate:active {
+    --recorrido: 1.4vmin;
+}
+
+button#activate:active span,
+button#activate:active:before {
+    transition: top 0.06s ease-in, height 0.06s ease-in;
+}
+
+/* apretado queda encendido desde adentro */
+button#activate.pushed span {
+    background: radial-gradient(circle at 50% 46%, #fff1e6 0%, #ffb49a 14%, #ff4a2c 42%, #e60f00 74%, #9c0500 100%);
     box-shadow:
-        0 0.5vmin 0 #930000,
-        0 0 3vmin 1.5vmin #ff3c3c,
-        0 0 12vmin 6vmin #ff000080;
+        inset 0 0 0 0.2vmin #ffb7a4,
+        0 0 3vmin 1vmin #ff3c28,
+        0 0 12vmin 5vmin #ff000070;
 }
 
 .box {
@@ -108,12 +166,13 @@ button#activate.pushed {
     left: calc(50vw - 22.5vmin);
     top: calc(60vh - 22.5vmin);
     z-index: 5;
-    transition: transform 1s ease 0s;
+    transition: transform 0.74s var(--caer);
     cursor: pointer;
 }
 
 .box.opened {
     transform: rotateX(60deg) rotateZ(-45deg) translateY(-22.5vmin) rotateX(105deg) translateY(22.5vmin);
+    transition: transform 1.5s var(--abrir);
 }
 
 .box div {
@@ -473,3 +532,141 @@ div#closing.close:after {
     100% { opacity: 1; }
 }
 
+/* Parte 6: icono de reinicio, silencio y ajustes finales */
+button#reload:before {
+    content: "";
+    width: 6vmin;
+    height: 6vmin;
+    position: absolute;
+    left: 2vmin;
+    top: 2vmin;
+    border-radius: 100%;
+    border: 1vmin solid #000;
+    box-sizing: border-box;
+    border-bottom-color: transparent;
+}
+
+button#reload:after {
+    content: "";
+    border: 1.25vmin solid transparent;
+    border-top: 2vmin solid #000;
+    position: absolute;
+    left: 6.2vmin;
+    top: 5vmin;
+    transform: rotate(40deg);
+}
+
+#mute {
+    position: absolute;
+    bottom: 1vmin;
+    right: 1vmin;
+    background: #8bc34a80;
+    width: 6vmin;
+    height: 6vmin;
+    cursor: pointer;
+    border: 0.5vmin solid #151515;
+    z-index: 9;
+}
+
+#mute.muted {
+    background: #ff000080;
+}
+
+#mute:before {
+    content: "";
+    border: 0.75vmin solid transparent;
+    height: 2vmin;
+    border-right: 2vmin solid #151515;
+    position: absolute;
+    left: 0.6vmin;
+    top: 0.5vmin;
+    box-sizing: content-box;
+}
+
+/* curvas calculadas con una simulacion fisica */
+:root {
+    --abrir: linear(0 0.00%, 0.1018 3.83%, 0.3358 7.70%, 0.6054 11.53%, 0.8496 15.40%, 1.0289 19.23%, 1.1356 23.07%, 1.1769 26.93%, 1.1693 30.77%, 1.1328 34.60%, 1.0847 38.47%, 1.0391 42.30%, 1.003 46.17%, 0.9801 50.00%, 0.9695 53.83%, 0.9686 57.70%, 0.974 61.53%, 0.9823 65.40%, 0.9907 69.23%, 0.9978 73.07%, 1.0026 76.93%, 1.0051 80.77%, 1.0057 84.60%, 1.005 88.47%, 1.0036 92.30%, 1.0021 96.17%, 1 100%);
+    --caer: linear(0 0.00%, 0.0161 2.97%, 0.035 5.87%, 0.0575 8.85%, 0.0822 11.75%, 0.1102 14.72%, 0.14 17.62%, 0.1727 20.59%, 0.2071 23.50%, 0.2449 26.47%, 0.2858 29.44%, 0.3291 32.34%, 0.3772 35.31%, 0.4281 38.22%, 0.4847 41.19%, 0.5447 44.09%, 0.6115 47.06%, 0.684 50.03%, 0.7607 52.94%, 0.8455 55.91%, 0.9349 58.81%, 1 60.84%, 0.9896 61.78%, 0.9621 64.69%, 0.9407 67.66%, 0.9264 70.56%, 0.9185 73.53%, 0.9175 76.50%, 0.923 79.41%, 0.9354 82.38%, 0.9542 85.28%, 0.9801 88.25%, 1 90.14%, 0.9965 91.15%, 0.9909 94.13%, 0.9921 97.03%, 1 100%);
+    --resorte: linear(0 0.00%, 0.316 4.55%, 0.8634 9.09%, 1.2249 13.64%, 1.2874 18.18%, 1.1591 22.73%, 1.0032 27.27%, 0.9202 31.82%, 0.9216 36.36%, 0.9662 40.91%, 1.0083 45.45%, 1.0256 50.00%, 1.0203 54.55%, 1.0062 59.09%, 0.9954 63.64%, 0.9923 68.18%, 0.995 72.73%, 0.9992 77.27%, 1.0018 81.82%, 1.0022 86.36%, 1.0011 90.91%, 1 95.45%, 1 100%);
+}
+
+
+/* la tapa se levanta apenas cuando el mouse la toca */
+.box:not(.opened):not(.cayendo):hover {
+    transform: rotateX(60deg) rotateZ(-45deg) translateY(-22.5vmin) rotateX(5deg) translateY(22.5vmin);
+    transition: transform 0.25s ease-out;
+}
+
+/* reflejo que recorre el vidrio mientras gira */
+.box > div:nth-child(2) {
+    opacity: 0.62;
+    background:
+        linear-gradient(115deg, transparent 22%, #ffffff66 32%, #ffffff12 40%, transparent 50%, #ffffff33 58%, transparent 65%),
+        #00bcd47d;
+    background-size: 260% 100%, 100% 100%;
+    background-position: 100% 0, 0 0;
+    transition: background-position 1.4s ease-out;
+}
+
+.box.opened > div:nth-child(2) {
+    background-position: 0 0, 0 0;
+}
+
+/* sombra que la tapa cerrada proyecta sobre la placa */
+.warning:before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: #000;
+    opacity: 0.32;
+    transition: opacity 0.7s ease;
+}
+
+body:has(.box.opened) .warning:before {
+    opacity: 0;
+}
+
+@keyframes golpe {
+    20% { translate: 0 0.8vmin; }
+    45% { translate: 0 -0.35vmin; }
+    70% { translate: 0 0.15vmin; }
+}
+
+@keyframes toque {
+    30% { translate: 0 0.22vmin; }
+    65% { translate: 0 -0.08vmin; }
+}
+
+body.golpe {
+    animation: golpe 0.3s ease-out;
+}
+
+body.toque {
+    animation: toque 0.18s ease-out;
+}
+
+/* la luz arranca titilando como una lampara y despues late */
+button#activate.pushed span {
+    animation: arranque 0.5s linear, latido 0.5s ease-in-out 0.5s infinite alternate;
+}
+
+@keyframes arranque {
+    0% { filter: brightness(0.55); }
+    10% { filter: brightness(1.5); }
+    18% { filter: brightness(0.7); }
+    30% { filter: brightness(1.4); }
+    42% { filter: brightness(0.85); }
+    60% { filter: brightness(1.25); }
+    100% { filter: brightness(1); }
+}
+
+@keyframes latido {
+    to { filter: brightness(1.3); }
+}
+
+/* la pantalla parpadea en rojo: se respeta a quien pidio menos movimiento */
+@media (prefers-reduced-motion: reduce) {
+    #panel, #abort, #detonate.show, body.golpe, body.toque, button#activate.pushed span {
+        animation: none;
+    }
+}

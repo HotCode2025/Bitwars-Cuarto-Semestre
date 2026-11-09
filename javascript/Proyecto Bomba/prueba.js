@@ -28,12 +28,41 @@ function showCountDown() {
 }
 
 var cover = document.getElementById("cover");
+var rebotes = [];
+
+// reinicia la animacion aunque la anterior siga corriendo
+function golpear(tipo) {
+    document.body.classList.remove("golpe", "toque");
+    void document.body.offsetWidth;
+    document.body.classList.add(tipo);
+}
+
+function abrirTapa() {
+    rebotes.forEach(clearTimeout);
+    cover.classList.remove("cayendo");
+    cover.classList.add("opened");
+}
+
+// 451 y 667 ms son los impactos que da la simulacion de la curva --caer
+function cerrarTapa() {
+    cover.classList.remove("opened");
+    cover.classList.add("cayendo");
+    rebotes = [
+        setTimeout(function () { golpear("golpe"); }, 451),
+        setTimeout(function () { golpear("toque"); }, 667),
+        setTimeout(function () { cover.classList.remove("cayendo"); }, 740),
+    ];
+}
+
 cover.addEventListener("click", function () {
-    if (this.className == "box") this.classList.add("opened");
-    else this.classList.remove("opened");
+    if (this.classList.contains("opened")) cerrarTapa();
+    else abrirTapa();
 });
 
 var btn = document.getElementById("activate");
+btn.addEventListener("pointerdown", function () {
+    golpear("toque");
+});
 btn.addEventListener("click", function () {
     this.classList.add("pushed");
     setTimeout(function () {
@@ -64,9 +93,7 @@ reload.addEventListener("click", function () {
     this.classList.remove("show");
     time.innerText = 9;
     time.classList.remove("crono");
-    setTimeout(function () {
-        cover.classList.remove("opened");
-    }, 100);
+    setTimeout(cerrarTapa, 100);
 });
 
 var mute = document.getElementById("mute");
