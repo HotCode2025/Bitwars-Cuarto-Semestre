@@ -44,3 +44,40 @@ btn.addEventListener("click", function () {
     }, 500);
 });
 
+// Parte 2
+abort.addEventListener("click", function () {
+    btn.classList.remove("pushed");
+    panel.classList.remove("show");
+    clearInterval(theCount);
+    time.innerText = 9;
+    alarm.pause();
+    alarm.load();
+});
+
+reload.addEventListener("click", function () {
+    panel.classList.remove("show");
+    turnOff.classList.remove("close");
+    turnOffHor.classList.remove("close");
+    abort.classList.remove("hide");
+    detonate.classList.remove("show");
+    btn.classList.remove("pushed");
+    this.classList.remove("show");
+    time.innerText = 9;
+    time.classList.remove("crono");
+    setTimeout(function () {
+        cover.classList.remove("opened");
+    }, 100);
+});
+
+var mute = document.getElementById("mute");
+mute.addEventListener("click", function () {
+    if (this.className == "muted") {
+        alarm.muted = false;
+        alarm2.muted = false;
+        this.classList.remove("muted");
+    } else {
+        alarm.muted = true;
+        alarm2.muted = true;
+        this.classList.add("muted");
+    }
+});
