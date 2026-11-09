@@ -58,3 +58,12 @@ pg_ctl start -D "$env:LOCALAPPDATA\pern-postgres\data" -l "$env:LOCALAPPDATA\per
 | POST | `/api/tareas` | 200 y la tarea creada, o 409 si el título ya existe |
 | PUT | `/api/tareas/:id` | 200 y la tarea actualizada, o 404 si no existe |
 | DELETE | `/api/tareas/:id` | 204 sin contenido, o 404 si no existe |
+
+## Parte 3: registro de usuarios
+
+- `database/init.sql` suma la tabla `usuarios`, con email único y fechas automáticas.
+- `POST /api/signup` recibe `name`, `email` y `password`.
+- La contraseña se guarda encriptada con `bcrypt`, nunca en texto plano.
+- `libs/jwt.js` genera un token JWT con el id del usuario, que vence en un día.
+- El token viaja en una cookie `httpOnly`, que JavaScript no puede leer desde el navegador.
+- La respuesta devuelve los datos del usuario sin la contraseña. Si el correo ya existe, responde 400.
