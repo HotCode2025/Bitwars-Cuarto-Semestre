@@ -96,3 +96,19 @@ pnpm dev
 - `react-router-dom` define las páginas de `src/pages`.
 - Tailwind CSS para los estilos y componentes reutilizables en `src/components/ui`.
 - El formulario de registro se valida con `react-hook-form`.
+
+## Parte 6: conexión del frontend con el backend
+
+Backend:
+
+- `cors` permite las peticiones desde `http://localhost:5173`, con credenciales para que viaje la cookie.
+- `zod` valida los datos en `src/schemas`, y el middleware `validateSchema` responde 400 con la lista de errores.
+
+Frontend:
+
+- `axios` hace las peticiones, configurado en `src/api`.
+- `AuthContext` guarda el usuario y si está autenticado, y lo comparte con toda la app mediante `useAuth`.
+- Al recargar la página, pide `/api/profile` para recuperar la sesión desde la cookie.
+- `ProtectedRoute` decide qué páginas se ven según haya sesión o no, y la barra de navegación cambia igual.
+- Los errores del backend se muestran en los formularios.
+- Se pueden crear, listar y eliminar tareas desde la página.

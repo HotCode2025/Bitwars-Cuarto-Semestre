@@ -6,20 +6,38 @@ import RegisterPage from './pages/RegisterPage'
 import ProfilePage from './pages/ProfilePage'
 import TareasPage from './pages/TareasPage'
 import TareaFormPage from './pages/TareaFormPage'
+import NotFound from './pages/NotFound'
+import Navbar from './components/navbar/Navbar'
+import { ProtectedRoute } from './components/ProtectedRoute'
+import { Container } from './components/ui'
+import { useAuth } from './context/AuthContext'
 
 function App() {
-  return (
-    <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/about" element={<AboutPage />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/register" element={<RegisterPage />} />
+  const { isAuth } = useAuth()
 
-      <Route path="/perfil" element={<ProfilePage />} />
-      <Route path="/tareas" element={<TareasPage />} />
-      <Route path="/tareas/crear" element={<TareaFormPage />} />
-      <Route path="/tareas/editar/:id" element={<TareaFormPage />} />
-    </Routes>
+  return (
+    <>
+      <Navbar />
+      <Container className="py-5">
+        <Routes>
+          <Route element={<ProtectedRoute isAllowed={!isAuth} redirectTo="/tareas" />}>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+          </Route>
+
+          <Route element={<ProtectedRoute isAllowed={isAuth} redirectTo="/login" />}>
+            <Route path="/perfil" element={<ProfilePage />} />
+            <Route path="/tareas" element={<TareasPage />} />
+            <Route path="/tareas/crear" element={<TareaFormPage />} />
+            <Route path="/tareas/editar/:id" element={<TareaFormPage />} />
+          </Route>
+
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Container>
+    </>
   )
 }
 

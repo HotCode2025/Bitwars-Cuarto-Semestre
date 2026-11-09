@@ -36,7 +36,8 @@ export const crearTarea = async (req, res, next) => {
 export const actualizarTarea = async (req, res) => {
   const { titulo, descripcion } = req.body;
   const result = await pool.query(
-    "UPDATE tareas SET titulo = $1, descripcion = $2 WHERE id = $3 AND usuario_id = $4 RETURNING *",
+    // COALESCE porque el esquema de actualizar permite mandar solo uno de los dos campos
+    "UPDATE tareas SET titulo = COALESCE($1, titulo), descripcion = COALESCE($2, descripcion) WHERE id = $3 AND usuario_id = $4 RETURNING *",
     [titulo, descripcion, req.params.id, req.usuarioId]
   );
   if (result.rowCount === 0) {
