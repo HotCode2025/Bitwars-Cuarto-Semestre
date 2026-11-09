@@ -1,12 +1,15 @@
 import { pool } from "../db.js";
 
 export const listarTareas = async (req, res) => {
-  const resultado = await pool.query("SELECT * FROM tareas");
+  const resultado = await pool.query("SELECT * FROM tareas WHERE usuario_id = $1", [req.usuarioId]);
   return res.json(resultado.rows);
 };
 
 export const listarTarea = async (req, res) => {
-  const resultado = await pool.query("SELECT * FROM tareas WHERE id = $1", [req.params.id]);
+  const resultado = await pool.query("SELECT * FROM tareas WHERE id = $1 AND usuario_id = $2", [
+    req.params.id,
+    req.usuarioId,
+  ]);
   if (resultado.rowCount === 0) {
     return res.status(404).json({ message: "La tarea no existe" });
   }
@@ -18,8 +21,8 @@ export const crearTarea = async (req, res, next) => {
 
   try {
     const result = await pool.query(
-      "INSERT INTO tareas (titulo, descripcion) VALUES ($1, $2) RETURNING *",
-      [titulo, descripcion]
+      "INSERT INTO tareas (titulo, descripcion, usuario_id) VALUES ($1, $2, $3) RETURNING *",
+      [titulo, descripcion, req.usuarioId]
     );
     return res.json(result.rows[0]);
   } catch (error) {
@@ -33,8 +36,8 @@ export const crearTarea = async (req, res, next) => {
 export const actualizarTarea = async (req, res) => {
   const { titulo, descripcion } = req.body;
   const result = await pool.query(
-    "UPDATE tareas SET titulo = $1, descripcion = $2 WHERE id = $3 RETURNING *",
-    [titulo, descripcion, req.params.id]
+    "UPDATE tareas SET titulo = $1, descripcion = $2 WHERE id = $3 AND usuario_id = $4 RETURNING *",
+    [titulo, descripcion, req.params.id, req.usuarioId]
   );
   if (result.rowCount === 0) {
     return res.status(404).json({ message: "No existe una tarea con ese id" });
@@ -43,7 +46,10 @@ export const actualizarTarea = async (req, res) => {
 };
 
 export const eliminarTarea = async (req, res) => {
-  const resultado = await pool.query("DELETE FROM tareas WHERE id = $1", [req.params.id]);
+  const resultado = await pool.query("DELETE FROM tareas WHERE id = $1 AND usuario_id = $2", [
+    req.params.id,
+    req.usuarioId,
+  ]);
   if (resultado.rowCount === 0) {
     return res.status(404).json({ message: "No existe una tarea con ese id" });
   }

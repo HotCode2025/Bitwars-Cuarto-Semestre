@@ -72,5 +72,27 @@ pg_ctl start -D "$env:LOCALAPPDATA\pern-postgres\data" -l "$env:LOCALAPPDATA\per
 
 - `cookie-parser` convierte las cookies de la petición en un objeto (`req.cookies`).
 - El middleware `isAuth` verifica el token: si falta o es inválido, responde 401 con "No estas autorizado".
-- Si el token es válido, guarda el id del usuario en `req.userId` y sigue con `next()`.
+- Si el token es válido, guarda el id del usuario en `req.usuarioId` y sigue con `next()`.
 - Protege todas las rutas de tareas y `GET /api/profile`.
+
+## Parte 5: fin del backend e inicio del frontend
+
+Backend:
+
+- `POST /api/signin` busca el correo, compara la contraseña con `bcrypt` y guarda el token en la cookie.
+- `POST /api/signout` borra la cookie y `GET /api/profile` devuelve los datos del usuario logueado.
+- Cada tarea tiene un `usuario_id`: cada usuario solo ve, edita y elimina las suyas.
+- Al registrarse se genera el avatar con Gravatar a partir del hash `md5` del correo.
+
+Frontend (`frontend/`, con Vite y React):
+
+```bash
+cd frontend
+pnpm install
+pnpm dev
+```
+
+- Queda en `http://localhost:5173`.
+- `react-router-dom` define las páginas de `src/pages`.
+- Tailwind CSS para los estilos y componentes reutilizables en `src/components/ui`.
+- El formulario de registro se valida con `react-hook-form`.
