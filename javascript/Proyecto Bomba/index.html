@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activar Bomba</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="grid"></div>
+
+    <div class="warning"></div>
+
+    <div class="base">
+        <button id="activate" aria-label="Activar autodestruccion">
+            <span></span>
+        </button>
+    </div>
+
+    <div class="box" id="cover">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <span></span><span></span>
+    </div>
+
+    <div class="hinges"></div>
+
+    <div class="text">
+        SELF-&thinsp;DESTRUCT
+    </div>
+
+    <div id="panel">
+        <div id="msg">DEVICE SELF-DESTRUCTION</div>
+        <div id="time">9</div>
+        <button id="abort">ABORT</button>
+        <span id="detonate">DETONATE</span>
+    </div>
+    <div id="turn-off"></div>
+    <div id="closing"></div>
+
+    <div id="restart"><button id="reload" aria-label="Reiniciar"></button></div>
+
+    <button id="mute" aria-label="Silenciar"></button>
+
+    <audio id="alarm" src="sound/alarm.mp3"></audio>
+    <audio id="alarm2" src="sound/explosion.mp3"></audio>
+    <script src="prueba.js"></script>
+</body>
+</html>
