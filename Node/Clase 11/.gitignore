@@ -1,0 +1,111 @@
+# =========================
+# Node.js
+# =========================
+
+# Dependencias
+/node_modules
+jspm_packages/
+
+# Archivos de registro (logs)
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# Informes de diagnóstico (https://nodejs.org/api/report.html)
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# Datos en tiempo de ejecución
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Directorio para librerías instrumentadas (jscoverage/JSCover)
+lib-cov
+
+# Directorio de cobertura (Istanbul/nyc)
+coverage
+*.lcov
+.nyc_output
+
+# Almacenamiento intermedio de Grunt
+.grunt
+
+# Directorio de dependencias de Bower
+bower_components
+
+# Configuración de node-waf
+.lock-wscript
+
+# Complementos binarios compilados
+build/Release
+
+# Archivos de declaración de TypeScript
+typings/
+
+# Caché opcional de npm
+.npm
+
+# Caché opcional de ESLint
+.eslintcache
+
+# Historial opcional del REPL de Node
+.node_repl_history
+
+# Salida de 'npm pack'
+*.tgz
+
+# Archivo de integridad de Yarn
+.yarn-integrity
+
+# Archivos de variables de entorno
+.env
+.env.*
+!.env.example
+
+# Caché de Parcel
+.cache
+
+# Salida de compilación de Next.js
+.next
+
+# Salida de compilación de Nuxt.js
+.nuxt
+
+# Salida de compilación de VuePress
+.vuepress/dist
+
+# Directorios de Serverless
+.serverless/
+
+# Caché de FuseBox
+.fusebox/
+
+# Archivos de DynamoDB Local
+.dynamodb/
+
+# Directorio de distribución (build)
+dist/
+
+# =========================
+# Linux
+# =========================
+
+# Archivos temporales creados cuando un proceso mantiene abierto un archivo borrado
+*~
+
+# Archivos ocultos de FUSE (sistemas de archivos en espacio de usuario)
+.fuse_hidden*
+
+# Preferencias de directorio de KDE
+.directory
+
+# Papelera de reciclaje de Linux (puede aparecer en cualquier partición)
+.Trash-*
+
+# Archivos .nfs creados cuando un archivo abierto es eliminado pero sigue en uso
+.nfs*
