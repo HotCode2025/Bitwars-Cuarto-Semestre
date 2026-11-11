@@ -1,0 +1,3 @@
+allowBuilds:
+  # bcrypt ya trae binarios compilados en prebuilds/, no necesita su script de instalacion
+  bcrypt: false
