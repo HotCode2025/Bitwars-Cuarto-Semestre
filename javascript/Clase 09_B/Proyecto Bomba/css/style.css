@@ -1,0 +1,672 @@
+/* Parte 3: pagina, boton y tapa */
+body {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    background-color: #151515;
+}
+
+/* aro de acero cepillado atornillado a la placa */
+.base {
+    position: absolute;
+    left: calc(50vw - 15vmin);
+    top: calc(60vh - 15vmin);
+    width: 30vmin;
+    height: 30vmin;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background:
+        radial-gradient(circle closest-side, #050505 0 76%, #1c1c1c 77%, #bdbdbd 78.5%, #6a6a6a 80%, transparent 81%),
+        repeating-conic-gradient(#ffffff12 0 0.6deg, #00000014 0.6deg 1.2deg),
+        conic-gradient(from 215deg, #f2f2f2, #8f8f8f 14%, #d9d9d9 27%, #6e6e6e 44%, #e8e8e8 58%, #7d7d7d 74%, #cfcfcf 88%, #f2f2f2);
+    box-shadow:
+        0 0.5vmin 0 #8a8a8a,
+        0 1vmin 0 #5c5c5c,
+        0 1.5vmin 0 #333,
+        0 3vmin 2.5vmin 0.5vmin #000000c0,
+        inset 0 0 0 0.25vmin #ffffffa0;
+    z-index: 2;
+    transform: rotateX(60deg);
+    transition: translate 0.55s var(--resorte);
+}
+
+.base:has(#activate:active) {
+    translate: 0 0.3vmin;
+    transition: translate 0.06s ease-in;
+}
+
+/* cuatro tornillos sobre el aro */
+.base:before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    --tornillo: #f0f0f0 0, #9a9a9a 55%, #3a3a3a 80%, transparent 100%;
+    background:
+        radial-gradient(circle 0.75vmin at calc(50% - 9.4vmin) calc(50% - 9.4vmin), var(--tornillo)),
+        radial-gradient(circle 0.75vmin at calc(50% + 9.4vmin) calc(50% - 9.4vmin), var(--tornillo)),
+        radial-gradient(circle 0.75vmin at calc(50% - 9.4vmin) calc(50% + 9.4vmin), var(--tornillo)),
+        radial-gradient(circle 0.75vmin at calc(50% + 9.4vmin) calc(50% + 9.4vmin), var(--tornillo));
+}
+
+button#activate {
+    --recorrido: 8vmin;
+    position: relative;
+    width: 22vmin;
+    height: 22vmin;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    outline: none;
+    cursor: pointer;
+    background: transparent;
+}
+
+/* costado del cilindro: la luz cae de frente y se oscurece hacia los bordes */
+button#activate:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: calc(var(--recorrido) * -1);
+    width: 100%;
+    height: calc(100% + var(--recorrido));
+    border-radius: 11vmin;
+    background:
+        linear-gradient(90deg, #2c0000 0%, #7f0300 9%, #c40d02 24%, #f0301c 41%, #d61406 58%, #8a0400 82%, #300000 100%);
+    box-shadow: 0 0.8vmin 1.2vmin #000000d0;
+    transition: top 0.55s var(--resorte), height 0.55s var(--resorte);
+}
+
+/* cara superior, apenas abombada */
+button#activate span {
+    position: absolute;
+    left: 0;
+    top: calc(var(--recorrido) * -1);
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background:
+        radial-gradient(ellipse 62% 26% at 52% 95%, #ff7a5c90, transparent 72%),
+        radial-gradient(circle at 44% 36%, #f2331f 0%, #dc1508 38%, #b90a02 68%, #8c0500 90%, #6a0300 100%);
+    box-shadow:
+        inset 0 0 0 0.2vmin #ff8b7666,
+        inset 0 -0.6vmin 1.4vmin #30000099,
+        inset 0 0.6vmin 1vmin #ffffff3d;
+    transition: top 0.55s var(--resorte), box-shadow 0.15s ease, filter 0.2s ease;
+}
+
+/* reflejo ancho y difuso de la luz del techo */
+button#activate span:before {
+    content: "";
+    position: absolute;
+    left: 17%;
+    top: 9%;
+    width: 58%;
+    height: 34%;
+    border-radius: 50%;
+    background: linear-gradient(180deg, #ffffff9c, #ffffff0a 88%);
+    filter: blur(0.45vmin);
+}
+
+/* punto de brillo duro, el detalle que hace ver plastico real */
+button#activate span:after {
+    content: "";
+    position: absolute;
+    left: 28%;
+    top: 14%;
+    width: 15%;
+    height: 8%;
+    border-radius: 50%;
+    background: #ffffffe6;
+    filter: blur(0.2vmin);
+}
+
+button#activate:hover span {
+    filter: brightness(1.1);
+}
+
+button#activate:focus-visible span {
+    box-shadow: 0 0 0 0.6vmin #fff;
+}
+
+button#activate.pushed {
+    --recorrido: 2.6vmin;
+}
+
+button#activate:active {
+    --recorrido: 1.4vmin;
+}
+
+button#activate:active span,
+button#activate:active:before {
+    transition: top 0.06s ease-in, height 0.06s ease-in;
+}
+
+/* apretado queda encendido desde adentro */
+button#activate.pushed span {
+    background: radial-gradient(circle at 50% 46%, #fff1e6 0%, #ffb49a 14%, #ff4a2c 42%, #e60f00 74%, #9c0500 100%);
+    box-shadow:
+        inset 0 0 0 0.2vmin #ffb7a4,
+        0 0 3vmin 1vmin #ff3c28,
+        0 0 12vmin 5vmin #ff000070;
+}
+
+.box {
+    transform: rotateX(60deg) rotateZ(-45deg) translateY(-22.5vmin) rotateX(0deg) translateY(22.5vmin);
+    transform-style: preserve-3d;
+    width: 45vmin;
+    height: 45vmin;
+    position: absolute;
+    left: calc(50vw - 22.5vmin);
+    top: calc(60vh - 22.5vmin);
+    z-index: 5;
+    transition: transform 0.74s var(--caer);
+    cursor: pointer;
+}
+
+.box.opened {
+    transform: rotateX(60deg) rotateZ(-45deg) translateY(-22.5vmin) rotateX(105deg) translateY(22.5vmin);
+    transition: transform 1.5s var(--abrir);
+}
+
+.box div {
+    position: absolute;
+    width: 45vmin;
+    height: 45vmin;
+    background: #00bcd47d;
+    opacity: 0.5;
+    border: 1px solid #00a4b9;
+    border-radius: 3px;
+    box-sizing: border-box;
+    box-shadow: 0 0 3px #00bcd4a6;
+    transform-origin: 0 0;
+}
+
+.box > div:nth-child(1) {
+    opacity: 0;
+}
+
+.box > div:nth-child(2) {
+    transform: translateZ(10vmin);
+}
+
+.box > div:nth-child(3) {
+    height: 10vmin;
+    transform: rotateX(90deg);
+}
+
+.box > div:nth-child(4) {
+    height: 10vmin;
+    transform: translateY(45vmin) rotateX(90deg);
+}
+
+.box > div:nth-child(5) {
+    width: 10vmin;
+    transform: rotateY(-90deg);
+}
+
+.box > div:nth-child(6) {
+    width: 10vmin;
+    transform: translateX(45vmin) rotateY(-90deg);
+}
+
+/* Parte 4: fondo, placa de advertencia y bisagras */
+.grid {
+    background:
+        repeating-linear-gradient(150deg, #ffffff0a 0 1px, transparent 1px 55px),
+        repeating-linear-gradient(30deg, #ffffff0a 0 1px, transparent 1px 55px);
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+}
+
+.warning {
+    position: absolute;
+    z-index: 0;
+    left: calc(50vw - 22.5vmin);
+    top: calc(60vh - 22.5vmin);
+    width: 45vmin;
+    height: 45vmin;
+    background: repeating-linear-gradient(-45deg, black 0 3vmin, yellow 3vmin 6vmin);
+    transform: rotateX(60deg) rotateZ(-45deg);
+    box-shadow: 0 0 0 2vmin #af0000;
+}
+
+.warning:after,
+.text {
+    color: white;
+    background: #af0000;
+    font-family: Arial, Helvetica, serif;
+    font-size: 3vmin;
+    line-height: 5vmin;
+    width: 45vmin;
+    height: 5vmin;
+    text-align: center;
+    position: absolute;
+}
+
+.warning:after {
+    content: "WARNING: \2003 DANGER";
+    left: -3.5vmin;
+    top: 0;
+    transform-origin: 0 0;
+    transform: rotate(90deg);
+}
+
+.text {
+    z-index: 0;
+    left: calc(50vw - 22.5vmin);
+    top: calc(60vh - 22.5vmin);
+    transform-origin: 22.5vmin 22.5vmin;
+    transform: rotateX(60deg) rotateZ(-45deg) translateY(48.5vmin);
+}
+
+.hinges {
+    position: absolute;
+    z-index: 3;
+    left: calc(50vw - 22.5vmin);
+    top: calc(60vh - 22.5vmin);
+    width: 45vmin;
+    height: 45vmin;
+    transform: rotateX(60deg) rotateZ(-45deg);
+    pointer-events: none;
+}
+
+.hinges:before,
+.hinges:after {
+    content: "";
+    background: #2b2b2b;
+    width: 5vmin;
+    height: 1.5vmin;
+    position: absolute;
+    top: -1.5vmin;
+    left: 8vmin;
+    border: 2px solid #00000010;
+    border-radius: 5px 5px 0 0;
+    box-sizing: border-box;
+}
+
+.hinges:after {
+    left: 32vmin;
+}
+
+.box > span:before,
+.box > span:after {
+    content: "";
+    width: 5vmin;
+    height: 1.5vmin;
+    background: #103e4480;
+    position: absolute;
+    top: 0;
+    left: 8vmin;
+    border-radius: 0 0 5px 5px;
+}
+
+.box > span:after {
+    left: 32vmin;
+}
+
+/* Parte 5: panel de cuenta regresiva y apagado */
+#panel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #ff0000d0;
+    color: #fff;
+    font-family: Arial, Helvetica, serif;
+    width: 100vw;
+    height: 100vh;
+    padding: 1vmin;
+    box-sizing: border-box;
+    z-index: 6;
+    display: none;
+    text-align: center;
+    text-shadow: 0 0 1px #fff, 0 0 3px #fff;
+    animation: warning-ligth 1s 0s infinite;
+}
+
+#panel.show {
+    display: block !important;
+}
+
+#panel:before {
+    content: "WARNING";
+    display: block;
+    margin-top: 3vmin;
+    padding-bottom: 2vmin;
+    font-size: 10vmin;
+    border-bottom: 1vmin dotted #fff;
+}
+
+#msg {
+    margin-top: 5vmin;
+    font-size: 5vmin;
+}
+
+#time {
+    font-size: 18vmin;
+    background: #00000090;
+    max-width: 40vmin;
+    margin: 6vmin auto 5vmin !important;
+    position: relative;
+    border-radius: 0.25vmin;
+    text-shadow: 0 0 3px #000, 0 0 2px #000, 0 0 3px #000;
+    padding: 1vmin 0;
+    transition: background 0.5s ease 0s;
+}
+
+#time:before {
+    content: "00:0";
+}
+
+#time.crono {
+    background: #ffffffb0;
+    color: #ff0000;
+}
+
+#abort {
+    background: #ffffffb8;
+    color: #d30303;
+    cursor: pointer;
+    border: 0;
+    padding: 1vmin 2.75vmin;
+    font-size: 6vmin;
+    border-radius: 0.25vmin;
+    font-weight: bold;
+    animation: highlight 1s 0s infinite;
+}
+
+#abort:hover {
+    background: #fff;
+    box-shadow: 0 0 15px 5px #fff;
+}
+
+#abort.hide {
+    display: none;
+}
+
+@keyframes highlight {
+    50% { box-shadow: 0 0 15px 5px #fff; }
+}
+
+#detonate {
+    display: none;
+    color: #fff;
+    z-index: 5;
+    font-size: 8vmin;
+    font-weight: bold;
+    text-shadow: 0 0 1px #fff, 0 0 3px #fff;
+}
+
+#detonate.show {
+    display: block;
+    animation: blink 0.25s 0s infinite;
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+@keyframes warning-ligth {
+    0% { box-shadow: inset 0 0 100vmin #ff000000; }
+    50% { box-shadow: inset 0 0 100vmin #000000a0; }
+}
+
+div#turn-off {
+    position: fixed;
+    background: #ffffff80;
+    left: 0;
+    width: 100vw;
+    height: 0;
+    z-index: 7;
+}
+
+div#turn-off:before,
+div#turn-off:after {
+    content: "";
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 0;
+    background: #000;
+    width: 100vw;
+    transition: height 0.5s ease 0s;
+}
+
+div#turn-off:after {
+    top: inherit;
+    bottom: 0;
+}
+
+div#turn-off.close:before,
+div#turn-off.close:after {
+    height: 49.75vh;
+    transition: height 0.1s ease 0.1s;
+}
+
+#closing {
+    width: 100vw;
+    position: absolute;
+    left: 0;
+}
+
+div#closing:before,
+div#closing:after {
+    content: "";
+    width: 50vw;
+    height: 1.5vh;
+    left: -50vw;
+    top: 49.25vh;
+    position: fixed;
+    background: #000;
+    z-index: 7;
+}
+
+div#closing:after {
+    right: -50vw;
+    left: initial;
+}
+
+div#closing.close:before {
+    left: 0;
+    transition: left 0.2s ease 0.2s;
+}
+
+div#closing.close:after {
+    right: 0;
+    transition: right 0.2s ease 0.2s;
+}
+
+#restart {
+    position: absolute;
+    z-index: 8;
+    display: none;
+    left: 50vw;
+    top: 50vh;
+}
+
+#reload {
+    position: absolute;
+    z-index: 8;
+    width: 10vmin;
+    height: 10vmin;
+    border-radius: 100%;
+    border: 0;
+    background: #d50505;
+    margin-top: -5vmin;
+    margin-left: -5vmin;
+    opacity: 0;
+    cursor: pointer;
+    transform: rotate(0deg);
+    transition: transform 0.5s ease 0s;
+    outline: none;
+}
+
+#reload:hover {
+    background: #ef0000;
+    transform: rotate(360deg);
+}
+
+#reload:focus-visible {
+    outline: 0.5vmin solid #fff;
+}
+
+#restart.show {
+    display: block;
+}
+
+#restart.show #reload {
+    animation: refresh 3.5s 0s 1;
+    opacity: 1;
+}
+
+@keyframes refresh {
+    0% { opacity: 0; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+/* Parte 6: icono de reinicio, silencio y ajustes finales */
+button#reload:before {
+    content: "";
+    width: 6vmin;
+    height: 6vmin;
+    position: absolute;
+    left: 2vmin;
+    top: 2vmin;
+    border-radius: 100%;
+    border: 1vmin solid #000;
+    box-sizing: border-box;
+    border-bottom-color: transparent;
+}
+
+button#reload:after {
+    content: "";
+    border: 1.25vmin solid transparent;
+    border-top: 2vmin solid #000;
+    position: absolute;
+    left: 6.2vmin;
+    top: 5vmin;
+    transform: rotate(40deg);
+}
+
+#mute {
+    position: absolute;
+    bottom: 1vmin;
+    right: 1vmin;
+    background: #8bc34a80;
+    width: 6vmin;
+    height: 6vmin;
+    cursor: pointer;
+    border: 0.5vmin solid #151515;
+    z-index: 9;
+}
+
+#mute.muted {
+    background: #ff000080;
+}
+
+#mute:before {
+    content: "";
+    border: 0.75vmin solid transparent;
+    height: 2vmin;
+    border-right: 2vmin solid #151515;
+    position: absolute;
+    left: 0.6vmin;
+    top: 0.5vmin;
+    box-sizing: content-box;
+}
+
+/* curvas calculadas con una simulacion fisica */
+:root {
+    --abrir: linear(0 0.00%, 0.1018 3.83%, 0.3358 7.70%, 0.6054 11.53%, 0.8496 15.40%, 1.0289 19.23%, 1.1356 23.07%, 1.1769 26.93%, 1.1693 30.77%, 1.1328 34.60%, 1.0847 38.47%, 1.0391 42.30%, 1.003 46.17%, 0.9801 50.00%, 0.9695 53.83%, 0.9686 57.70%, 0.974 61.53%, 0.9823 65.40%, 0.9907 69.23%, 0.9978 73.07%, 1.0026 76.93%, 1.0051 80.77%, 1.0057 84.60%, 1.005 88.47%, 1.0036 92.30%, 1.0021 96.17%, 1 100%);
+    --caer: linear(0 0.00%, 0.0161 2.97%, 0.035 5.87%, 0.0575 8.85%, 0.0822 11.75%, 0.1102 14.72%, 0.14 17.62%, 0.1727 20.59%, 0.2071 23.50%, 0.2449 26.47%, 0.2858 29.44%, 0.3291 32.34%, 0.3772 35.31%, 0.4281 38.22%, 0.4847 41.19%, 0.5447 44.09%, 0.6115 47.06%, 0.684 50.03%, 0.7607 52.94%, 0.8455 55.91%, 0.9349 58.81%, 1 60.84%, 0.9896 61.78%, 0.9621 64.69%, 0.9407 67.66%, 0.9264 70.56%, 0.9185 73.53%, 0.9175 76.50%, 0.923 79.41%, 0.9354 82.38%, 0.9542 85.28%, 0.9801 88.25%, 1 90.14%, 0.9965 91.15%, 0.9909 94.13%, 0.9921 97.03%, 1 100%);
+    --resorte: linear(0 0.00%, 0.316 4.55%, 0.8634 9.09%, 1.2249 13.64%, 1.2874 18.18%, 1.1591 22.73%, 1.0032 27.27%, 0.9202 31.82%, 0.9216 36.36%, 0.9662 40.91%, 1.0083 45.45%, 1.0256 50.00%, 1.0203 54.55%, 1.0062 59.09%, 0.9954 63.64%, 0.9923 68.18%, 0.995 72.73%, 0.9992 77.27%, 1.0018 81.82%, 1.0022 86.36%, 1.0011 90.91%, 1 95.45%, 1 100%);
+}
+
+
+/* la tapa se levanta apenas cuando el mouse la toca */
+.box:not(.opened):not(.cayendo):hover {
+    transform: rotateX(60deg) rotateZ(-45deg) translateY(-22.5vmin) rotateX(5deg) translateY(22.5vmin);
+    transition: transform 0.25s ease-out;
+}
+
+/* reflejo que recorre el vidrio mientras gira */
+.box > div:nth-child(2) {
+    opacity: 0.62;
+    background:
+        linear-gradient(115deg, transparent 22%, #ffffff66 32%, #ffffff12 40%, transparent 50%, #ffffff33 58%, transparent 65%),
+        #00bcd47d;
+    background-size: 260% 100%, 100% 100%;
+    background-position: 100% 0, 0 0;
+    transition: background-position 1.4s ease-out;
+}
+
+.box.opened > div:nth-child(2) {
+    background-position: 0 0, 0 0;
+}
+
+/* sombra que la tapa cerrada proyecta sobre la placa */
+.warning:before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: #000;
+    opacity: 0.32;
+    transition: opacity 0.7s ease;
+}
+
+body:has(.box.opened) .warning:before {
+    opacity: 0;
+}
+
+@keyframes golpe {
+    20% { translate: 0 0.8vmin; }
+    45% { translate: 0 -0.35vmin; }
+    70% { translate: 0 0.15vmin; }
+}
+
+@keyframes toque {
+    30% { translate: 0 0.22vmin; }
+    65% { translate: 0 -0.08vmin; }
+}
+
+body.golpe {
+    animation: golpe 0.3s ease-out;
+}
+
+body.toque {
+    animation: toque 0.18s ease-out;
+}
+
+/* la luz arranca titilando como una lampara y despues late */
+button#activate.pushed span {
+    animation: arranque 0.5s linear, latido 0.5s ease-in-out 0.5s infinite alternate;
+}
+
+@keyframes arranque {
+    0% { filter: brightness(0.55); }
+    10% { filter: brightness(1.5); }
+    18% { filter: brightness(0.7); }
+    30% { filter: brightness(1.4); }
+    42% { filter: brightness(0.85); }
+    60% { filter: brightness(1.25); }
+    100% { filter: brightness(1); }
+}
+
+@keyframes latido {
+    to { filter: brightness(1.3); }
+}
+
+/* la pantalla parpadea en rojo: se respeta a quien pidio menos movimiento */
+@media (prefers-reduced-motion: reduce) {
+    #panel, #abort, #detonate.show, body.golpe, body.toque, button#activate.pushed span {
+        animation: none;
+    }
+}
